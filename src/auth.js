@@ -1,4 +1,5 @@
 /* globals localStorage */
+import axios from 'axios'
 
 export default {
   login (email, pass, cb) {
@@ -39,13 +40,17 @@ export default {
 
 function pretendRequest (email, pass, cb) {
   setTimeout(() => {
-    if (email === 'joe@example.com' && pass === 'password1') {
-      cb({
-        authenticated: true,
-        token: Math.random().toString(36).substring(7)
-      })
-    } else {
-      cb({ authenticated: false })
-    }
+
+      axios.post('http://api.extended.yii/v1/auth', {email: email, pass: pass})
+          .then(response => {
+              cb({
+                  authenticated: true,
+                  token: response.data.token
+              })
+          })
+          .catch(error => {
+              cb({ authenticated: false })
+          })
+
   }, 0)
 }
