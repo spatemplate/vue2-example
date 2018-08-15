@@ -1,17 +1,24 @@
 import Vue from 'vue'
 import * as uiv from 'uiv'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 
 Vue.use(VueRouter);
 Vue.use(uiv);
+Vue.use(Vuex);
 
-import auth from './auth'
-import App from './components/App.vue'
-import About from './components/About.vue'
-import Dashboard from './components/Dashboard.vue'
-import Login from './components/Login.vue'
-import Post from './components/Post.vue'
-import PostItem from './components/PostItem.vue'
+import auth from './modules/account/models/auth'
+import About from './modules/dashboard/controllers/About.vue'
+import Dashboard from './modules/dashboard/controllers/Dashboard.vue'
+import Login from './modules/account/controllers/Login.vue'
+import Post from './modules/post/controllers/Post.vue'
+import PostItem from './modules/post/controllers/PostItem.vue'
+
+const generateApiUrl = function (uri) {
+    let domain = 'http://api.extended.tpl';
+    let version = 1;
+    return domain + '/v' + version + '/' + uri;
+}
 
 function requireAuth(to, from, next) {
     if (!auth.loggedIn()) {
@@ -24,12 +31,29 @@ function requireAuth(to, from, next) {
     }
 }
 
+const store = new Vuex.Store({
+    state: {
+        domain: 'http://api.extended.tpl',
+        version: 1,
+    },
+    /*mutations: {
+        getServerUrl (state) {
+            state.count++
+        }
+    },
+    computed: {
+        getServerUrl () {
+            domain + '/v' + version + '/v1/auth'
+            return this.$store.;
+        }
+    }*/
+});
+
 const router = new VueRouter({
     mode: 'history',
     base: __dirname,
     routes: [
         {path: '/', component: Dashboard},
-        {path: '/app', component: App},
         {path: '/post', component: Post},
         {
             path: '/post/:id',
@@ -50,8 +74,9 @@ const router = new VueRouter({
     ]
 });
 
-new Vue({
+vm = new Vue({
     router,
+    store,
     data() {
         return {
             loggedIn: auth.loggedIn()
@@ -73,14 +98,11 @@ new Vue({
                 <navbar-nav>
 
                     <li><router-link to="/about">about</router-link></li>
-                    <li><router-link to="/app">app</router-link></li>
                     <li><router-link to="/post">Post</router-link></li>
 
-                    
-        
                 </navbar-nav>
 
-                <navbar-nav right>
+                <!--<navbar-nav right>
                     <dropdown tag="li">
                         <a class="dropdown-toggle" role="button">Quux <span class="caret"></span></a>
                         <template slot="dropdown">
@@ -101,7 +123,7 @@ new Vue({
                             <li><a role="button">Separated link</a></li>
                         </template>
                     </dropdown>
-                </navbar-nav>
+                </navbar-nav>-->
 				
 				<navbar-nav right>
                    <li><router-link v-if="loggedIn" to="/logout">Log out</router-link></li>

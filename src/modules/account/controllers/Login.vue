@@ -28,7 +28,7 @@
 </template>
 
 <script>
-    import auth from '../auth'
+    import auth from '../models/auth'
     import * as uiv from 'uiv'
     import Vue from 'vue'
 

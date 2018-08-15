@@ -1,6 +1,6 @@
-# wooppay
+# Wooppay
 
-> wooppay wallet
+> Wooppay wallet
 
 ## Build Setup
 

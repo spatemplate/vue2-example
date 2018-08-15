@@ -8,6 +8,8 @@
             {{post.id}}. {{post.title}}
         </router-link>
     </div>
+
+
 </template>
 
 <script>
