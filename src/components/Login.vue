@@ -18,7 +18,7 @@
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-flat">Войти</button>
-                        <p v-if="error" class="error">Bad login information</p>
+                        <!--<p v-if="error" class="error">Bad login information</p>-->
 
                     </div>
                 </form>
@@ -28,32 +28,55 @@
 </template>
 
 <script>
-import auth from '../auth'
+    import auth from '../auth'
+    import * as uiv from 'uiv'
+    import Vue from 'vue'
 
-export default {
-  data () {
-    return {
-      email: '',
-      pass: '',
-      error: false
-    }
-  },
-  methods: {
-    login () {
-      auth.login(this.email, this.pass, loggedIn => {
-        if (!loggedIn) {
-          this.error = true
-        } else {
-          this.$router.replace(this.$route.query.redirect || '/')
+    Vue.use(uiv);
+
+    export default {
+        data() {
+            return {
+                email: '',
+                pass: '',
+                error: false,
+                exception: false,
+                //loginEntity: null,
+            }
+        },
+        methods: {
+            notifySuccessLogin() {
+                this.$notify({
+                    type: 'success',
+                    title: 'Log in',
+                    content: 'You are success login in system!',
+                })
+            },
+            notifyFailLogin() {
+                this.$notify({
+                    type: 'danger',
+                    title: 'Log in',
+                    content: 'Incorrect login or password'
+                })
+            },
+            login() {
+                auth.login(this.email, this.pass, loggedIn => {
+                    if (!loggedIn) {
+                        this.error = true;
+                        this.notifyFailLogin();
+                        console.log(this.exception.response);
+                    } else {
+                        this.notifySuccessLogin();
+                        this.$router.replace(this.$route.query.redirect || '/')
+                    }
+                })
+            }
         }
-      })
     }
-  }
-}
 </script>
 
 <style>
-.error {
-  color: red;
-}
+    .error {
+        color: red;
+    }
 </style>

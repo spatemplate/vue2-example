@@ -13,11 +13,11 @@ import Login from './components/Login.vue'
 import Post from './components/Post.vue'
 import PostItem from './components/PostItem.vue'
 
-function requireAuth (to, from, next) {
+function requireAuth(to, from, next) {
     if (!auth.loggedIn()) {
         next({
             path: '/login',
-            query: { redirect: to.fullPath }
+            query: {redirect: to.fullPath}
         })
     } else {
         next()
@@ -28,20 +28,21 @@ const router = new VueRouter({
     mode: 'history',
     base: __dirname,
     routes: [
-        { path: '/', component: Dashboard },
-        { path: '/app', component: App },
-        { path: '/post', component: Post },
+        {path: '/', component: Dashboard},
+        {path: '/app', component: App},
+        {path: '/post', component: Post},
         {
             path: '/post/:id',
-            name:'post',
+            name: 'post',
             component: PostItem,
             props: true,
         },
-        { path: '/about', component: About },
-        { path: '/dashboard', component: Dashboard, beforeEnter: requireAuth },
-        { path: '/login', component: Login },
-        { path: '/logout',
-            beforeEnter (to, from, next) {
+        {path: '/about', component: About},
+        {path: '/dashboard', component: Dashboard, beforeEnter: requireAuth},
+        {path: '/login', component: Login},
+        {
+            path: '/logout',
+            beforeEnter(to, from, next) {
                 auth.logout();
                 next('/')
             }
@@ -51,12 +52,12 @@ const router = new VueRouter({
 
 new Vue({
     router,
-    data () {
+    data() {
         return {
             loggedIn: auth.loggedIn()
         }
     },
-    created () {
+    created() {
         auth.onChange = loggedIn => {
             this.loggedIn = loggedIn
         }
