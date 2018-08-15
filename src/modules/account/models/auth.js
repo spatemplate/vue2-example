@@ -1,6 +1,7 @@
 /* globals localStorage */
 
 import axios from 'axios'
+import config from '../../../components/config'
 
 export default {
     login(email, pass, cb) {
@@ -41,11 +42,9 @@ export default {
     },
 
     pretendRequest(email, pass, cb) {
-        setTimeout(() => {
+        //setTimeout(() => {
             // domain + '/v' + version + '/v1/auth';
-
-            //console.log(this.vm.store.domain);
-            axios.post('http://api.extended.tpl/v1/auth', {login: email, password: pass},)
+            axios.post(config.server.domain + '/v1/auth', {login: email, password: pass},)
                 .then(response => {
                     //console.log(response.data);
                     cb({
@@ -64,7 +63,7 @@ export default {
                     })
                 })
 
-        }, 0)
+        //}, 0)
     }
 }
 
