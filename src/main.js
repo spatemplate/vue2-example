@@ -75,8 +75,7 @@ new Vue({
                     <li><router-link to="/app">app</router-link></li>
                     <li><router-link to="/post">Post</router-link></li>
 
-                    <li><router-link v-if="loggedIn" to="/logout">Log out</router-link></li>
-                    <li><router-link v-if="!loggedIn" to="/login">Log in</router-link></li>
+                    
         
                 </navbar-nav>
 
@@ -102,6 +101,12 @@ new Vue({
                         </template>
                     </dropdown>
                 </navbar-nav>
+				
+				<navbar-nav right>
+                   <li><router-link v-if="loggedIn" to="/logout">Log out</router-link></li>
+                    <li><router-link v-if="!loggedIn" to="/login">Log in</router-link></li>
+                </navbar-nav>
+				
             </template>
         </navbar>
 

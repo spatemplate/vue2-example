@@ -33,7 +33,7 @@ import auth from '../auth'
 export default {
   data () {
     return {
-      email: 'joe@example.com',
+      email: '',
       pass: '',
       error: false
     }
