@@ -1,9 +1,9 @@
 /* globals localStorage */
 
-import axios from 'axios'
-import config from '../../../components/config'
+import rest from "../../../components/rest";
 
 export default {
+    identity: {},
     login(email, pass, cb) {
         cb = arguments[arguments.length - 1];
         if (localStorage.token) {
@@ -11,17 +11,29 @@ export default {
             this.onChange(true);
             return
         }
-        this.pretendRequest(email, pass, (res) => {
-            if (res.authenticated) {
-                localStorage.token = res.token;
+        rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
+            if (response.status < 400) {
+                localStorage.token = response.data.token;
                 if (cb) cb(true);
                 this.onChange(true)
             } else {
-                console.log(res.response.data);
+                // console.log(res.response.data);
                 if (cb) cb(false);
                 this.onChange(false)
             }
-        })
+        });
+
+    },
+
+    accountInfo(cb) {
+        rest.get('v1/auth', null, null, (response) => {
+            if (response.status < 400) {
+                if (cb) cb(true);
+            } else {
+                // console.log(res.response.data);
+                if (cb) cb(false);
+            }
+        });
     },
 
     getToken() {
@@ -41,30 +53,6 @@ export default {
     onChange() {
     },
 
-    pretendRequest(email, pass, cb) {
-        //setTimeout(() => {
-            // domain + '/v' + version + '/v1/auth';
-            axios.post(config.server.domain + '/v1/auth', {login: email, password: pass},)
-                .then(response => {
-                    //console.log(response.data);
-                    cb({
-                        authenticated: true,
-                        response: response,
-                        token: response.data.token,
-                    });
-                })
-                .catch(error => {
-                    //if (error.response.status === 422) {
-                    //    console.log(error.response.data);
-                    //}
-                    cb({
-                        authenticated: false,
-                        response: error.response,
-                    })
-                })
-
-        //}, 0)
-    }
 }
 
 
