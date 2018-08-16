@@ -37,7 +37,7 @@
                         </navbar-nav>-->
 
                         <navbar-nav right>
-                            <li><router-link v-if="loggedIn" to="/logout">Log out</router-link></li>
+                            <li><router-link v-if="loggedIn" to="/logout">{{ identity.login }} log out</router-link></li>
                             <li><router-link v-if="!loggedIn" to="/login">Log in</router-link></li>
                         </navbar-nav>
 
@@ -60,13 +60,15 @@
         name: 'app',
         data() {
             return {
+                identity: auth.getIdentity(),
                 loggedIn: auth.loggedIn(),
                 config: config,
             }
         },
         created() {
             auth.onChange = loggedIn => {
-                this.loggedIn = loggedIn
+                this.loggedIn = loggedIn;
+                this.identity = auth.getIdentity();
             }
         },
     }

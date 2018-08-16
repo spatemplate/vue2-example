@@ -1,6 +1,7 @@
 /* globals localStorage */
 
 import rest from "../../../components/rest";
+import router from "../../../components/router";
 
 export default {
     identity: {},
@@ -14,26 +15,35 @@ export default {
         rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
             if (response.status < 400) {
                 localStorage.token = response.data.token;
-                if (cb) cb(true);
+                this.identity = response.data;
+                if (cb) cb(response.data);
                 this.onChange(true)
+            } else if(response.status === 422) {
+                if (cb) cb({
+                    exception: 'Unprocessible entity',
+                    code: 422,
+                    data: response.data,
+                });
+                this.onChange(false)
             } else {
-                // console.log(res.response.data);
-                if (cb) cb(false);
+                if (cb) cb({
+                    exception: 'Unknown error',
+                    code: 1,
+                    data: response.data,
+                });
                 this.onChange(false)
             }
         });
 
     },
 
-    accountInfo(cb) {
-        rest.get('v1/auth', null, null, (response) => {
-            if (response.status < 400) {
-                if (cb) cb(true);
-            } else {
-                // console.log(res.response.data);
-                if (cb) cb(false);
-            }
-        });
+    getIdentity() {
+        if(this.identity === null) {
+            router.push('/login');
+            return null;
+        } else {
+            return this.identity;
+        }
     },
 
     getToken() {

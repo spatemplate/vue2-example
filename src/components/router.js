@@ -7,19 +7,9 @@ import Dashboard from '../modules/dashboard/controllers/Dashboard.vue'
 import Login from '../modules/account/controllers/Login.vue'
 import Post from '../modules/post/controllers/Post.vue'
 import PostItem from '../modules/post/controllers/PostItem.vue'
+import authHelper from "../modules/account/helpers/authHelper";
 
 Vue.use(Router);
-
-function requireAuth(to, from, next) {
-    if (!auth.loggedIn()) {
-        next({
-            path: '/login',
-            query: {redirect: to.fullPath}
-        })
-    } else {
-        next()
-    }
-}
 
 export default new Router({
     mode: 'history',
@@ -34,7 +24,7 @@ export default new Router({
             props: true,
         },
         {path: '/about', component: About},
-        {path: '/dashboard', component: Dashboard, beforeEnter: requireAuth},
+        {path: '/dashboard', component: Dashboard, beforeEnter: authHelper.requireAuth},
         {path: '/login', component: Login},
         {
             path: '/logout',

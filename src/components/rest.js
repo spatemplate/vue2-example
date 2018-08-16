@@ -1,6 +1,17 @@
 import config from "./config";
 import axios from "axios";
 import auth from "../modules/account/models/auth";
+import router from "./router";
+
+function errorHandle(response) {
+    if (response.status === 401) {
+        auth.logout(function () {});
+        router.push('/login');
+    }
+    if (response.status === 403) {
+        alert('Forbidden!');
+    }
+}
 
 export default {
 
@@ -11,6 +22,7 @@ export default {
                 cb(response);
             })
             .catch(error => {
+                errorHandle(error.response);
                 //if (error.response.status === 422) {
                 //    console.log(error.response.data);
                 //}
@@ -29,6 +41,7 @@ export default {
                 cb(response);
             })
             .catch(error => {
+                errorHandle(error.response);
                 //if (error.response.status === 422) {
                 //    console.log(error.response.data);
                 //}

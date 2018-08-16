@@ -40,8 +40,8 @@
                 email: '',
                 pass: '',
                 error: false,
-                exception: false,
-                //loginEntity: null,
+               // exception: false,
+                identity: null,
             }
         },
         methods: {
@@ -60,13 +60,15 @@
                 })
             },
             login() {
-                auth.login(this.email, this.pass, loggedIn => {
-                    if (!loggedIn) {
+                auth.login(this.email, this.pass, data => {
+                    if (data.exception) {
                         this.error = true;
+                        this.identity = null;
                         this.notifyFailLogin();
-                        console.log(this.exception.response);
+                        //console.log(this.exception.response);
                     } else {
                         this.notifySuccessLogin();
+                        this.identity = data;
                         this.$router.replace(this.$route.query.redirect || '/')
                     }
                 })
