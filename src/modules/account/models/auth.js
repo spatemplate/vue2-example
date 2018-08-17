@@ -6,17 +6,20 @@ import authHelper from "../helpers/authHelper";
 
 export default {
     identity: {},
+    isGuest: true,
+
     login(email, pass, cb) {
         cb = arguments[arguments.length - 1];
         if (localStorage.token) {
             if (cb) cb(true);
             this.onChange(true);
+            event.trigger('account-login-already-logged-exception', this.identity);
             return
         }
         rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
             if (response.status < 400) {
                 localStorage.token = response.data.token;
-                this.identity = response.data;
+                this.setIdentity(response.data);
                 if (cb) cb(response.data);
                 event.trigger('account-login', response.data);
                 this.onChange(true);
@@ -50,29 +53,46 @@ export default {
     },
 
     getIdentityFromApi() {
-        let cb = function (response) {
+        //alert('this.isGuest');
+        /*let cb = ;*/
+        rest.get('v1/auth', null, null, function (response) {
+            //alert('response');
             if (response.status === 401) {
+                //this.logout(function(){});
+                event.trigger('account-get-identity', {});
+                this.setIdentity({});
                 authHelper.redirectToLoginPage();
             }
             if (response.status >= 200) {
-                this.identity = response.data;
+                this.setIdentity(response.data);
+                event.trigger('account-get-identity', response.data);
             }
-        };
-        rest.get('v1/auth', null, null, cb);
+        });
     },
 
     getIdentity() {
-        if(this.identity.id) {
+        //this.setIdentity(this.identity);
+        //alert(localStorage.token);
+        /*if(this.isGuest) {
+
             this.getIdentityFromApi();
         }
+        //alert(this.isGuest);
+        this.setIdentity(this.identity);*/
+    },
 
-        if(this.identity.id) {
-            authHelper.redirectToLoginPage();
-            return null;
-        } else {
-            return this.identity;
-        }
+    init() {
 
+        this.setIdentity({});
+    },
+
+    setIdentity(identity) {
+
+        this.identity = identity;
+        this.isGuest = typeof localStorage.token === "undefined";
+        //alert(this.isGuest);
+        event.trigger('account-auth-change', !this.isGuest);
+        //alert(this.isGuest);
     },
 
     getToken() {
@@ -81,7 +101,7 @@ export default {
 
     logout(cb) {
         delete localStorage.token;
-        this.identity = {};
+        this.setIdentity({});
         if (cb) cb();
         event.trigger('account-logout');
         this.onChange(false);
@@ -91,7 +111,8 @@ export default {
         return !!localStorage.token
     },
 
-    onChange() {
+    onChange(loggedIn) {
+        event.trigger('account-auth-change', loggedIn);
     },
 
 }
