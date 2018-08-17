@@ -31,6 +31,7 @@
     import auth from '../models/auth'
     import * as uiv from 'uiv'
     import Vue from 'vue'
+    import notify from "../../../components/notify";
 
     Vue.use(uiv);
 
@@ -45,29 +46,12 @@
             }
         },
         methods: {
-            notifySuccessLogin() {
-                this.$notify({
-                    type: 'success',
-                    title: 'Log in',
-                    content: 'You are success login in system!',
-                })
-            },
-            notifyFailLogin() {
-                this.$notify({
-                    type: 'danger',
-                    title: 'Log in',
-                    content: 'Incorrect login or password'
-                })
-            },
             login() {
                 auth.login(this.email, this.pass, data => {
                     if (data.exception) {
                         this.error = true;
                         this.identity = null;
-                        this.notifyFailLogin();
-                        //console.log(this.exception.response);
                     } else {
-                        this.notifySuccessLogin();
                         this.identity = data;
                         this.$router.replace(this.$route.query.redirect || '/')
                     }

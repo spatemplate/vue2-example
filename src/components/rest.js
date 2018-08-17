@@ -1,12 +1,15 @@
 import config from "./config";
 import axios from "axios";
 import auth from "../modules/account/models/auth";
-import router from "./router";
+import authHelper from "../modules/account/helpers/authHelper";
 
 function errorHandle(response) {
+    if (response.status >= 500) {
+        alert('Server error!!');
+    }
     if (response.status === 401) {
         auth.logout(function () {});
-        router.push('/login');
+        authHelper.redirectToLoginPage();
     }
     if (response.status === 403) {
         alert('Forbidden!');

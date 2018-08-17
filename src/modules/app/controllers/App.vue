@@ -13,31 +13,8 @@
 
                         </navbar-nav>
 
-                        <!--<navbar-nav right>
-                            <dropdown tag="li">
-                                <a class="dropdown-toggle" role="button">Quux <span class="caret"></span></a>
-                                <template slot="dropdown">
-                                    <li><router-link to="/quux/1">quux/1</router-link></li>
-                                    <li><router-link to="/quux/2">quux/2</router-link></li>
-                                </template>
-                            </dropdown>
-                        </navbar-nav>
-
                         <navbar-nav right>
-                            <dropdown tag="li">
-                                <a class="dropdown-toggle" role="button">Dropdown <span class="caret"></span></a>
-                                <template slot="dropdown">
-                                    <li><a role="button">Action</a></li>
-                                    <li><a role="button">Another action</a></li>
-                                    <li><a role="button">Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a role="button">Separated link</a></li>
-                                </template>
-                            </dropdown>
-                        </navbar-nav>-->
-
-                        <navbar-nav right>
-                            <li><router-link v-if="loggedIn" to="/logout">{{ identity.login }} log out</router-link></li>
+                            <li><router-link v-if="loggedIn" to="/logout" >{{ identity.login }} log out</router-link></li>
                             <li><router-link v-if="!loggedIn" to="/login">Log in</router-link></li>
                         </navbar-nav>
 
@@ -56,6 +33,9 @@
     import auth from '../../../modules/account/models/auth'
     import config from '../../../components/config'
 
+    import CommonEvents from "../../../events/common";
+    import HeaderBar from '../../../components/HeaderBar'
+
     export default {
         name: 'app',
         data() {
@@ -66,10 +46,15 @@
             }
         },
         created() {
+            CommonEvents.registerAll();
+
             auth.onChange = loggedIn => {
                 this.loggedIn = loggedIn;
                 this.identity = auth.getIdentity();
             }
         },
+        /*components: {
+            HeaderBar
+        },*/
     }
 </script>
