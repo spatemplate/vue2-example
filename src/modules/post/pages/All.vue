@@ -1,7 +1,7 @@
 <template>
-    <div v-if="posts">
+    <div v-if="store.post.state.collection">
         <ul>
-            <li v-for="post in posts">
+            <li v-for="post in store.post.state.collection">
                 <router-link
                         active-class="is-active"
                         class="link"
@@ -10,11 +10,7 @@
                 </router-link>
             </li>
         </ul>
-
-
     </div>
-
-
 </template>
 
 <script>
@@ -24,7 +20,7 @@
     export default {
         data() {
             return {
-                posts: store.post.state.collection,
+                store: store,
             }
         },
         created() {
