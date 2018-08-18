@@ -1,7 +1,7 @@
-import rest from "../../app/helpers/rest";
-import event from "../../app/helpers/event";
-import authHelper from "../helpers/authHelper";
+import rest from "../../../helpers/rest";
+import event from "../../../helpers/event";
 import authStore from "../stores/auth";
+import router from "../../../config/router";
 
 export default {
 
@@ -45,7 +45,7 @@ export default {
                 this.logout(function(){});
                 event.trigger('account-get-identity', {});
                 this.setIdentity();
-                authHelper.redirectToLoginPage();
+                router.push('/login');
             }
             if (response.status >= 200) {
                 this.setIdentity(response.data);

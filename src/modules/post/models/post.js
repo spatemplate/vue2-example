@@ -1,5 +1,5 @@
-import rest from "../../app/helpers/rest";
-import event from "../../app/helpers/event";
+import rest from "../../../helpers/rest";
+import event from "../../../helpers/event";
 import store from "../stores/post";
 
 export default {

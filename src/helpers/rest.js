@@ -1,7 +1,7 @@
 import axios from "axios";
 import event from "./event";
-import auth from "../../account/stores/auth";
-import store from "../../../helpers/store";
+import auth from "../modules/account/stores/auth";
+import store from "../config/store";
 
 function errorHandle(response) {
     if (response.status >= 500) {

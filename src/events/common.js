@@ -1,6 +1,6 @@
-import event from "../modules/app/helpers/event";
+import event from "../helpers/event";
 import {Notification} from 'uiv'
-import router from "../helpers/router";
+import router from "../config/router";
 
 export default {
 
