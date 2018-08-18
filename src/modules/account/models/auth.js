@@ -54,27 +54,12 @@ export default {
         });
     },
 
-    getIdentity() {
-        //this.setIdentity(this.identity);
-        //alert(localStorage.token);
-        /*if(this.isGuest) {
-
-            this.getIdentityFromApi();
-        }
-        //alert(this.isGuest);
-        this.setIdentity(this.identity);*/
-    },
-
     init() {
-
         this.setIdentity();
     },
 
     setIdentity(identity) {
-        identity = typeof identity === "object" ? identity : {
-            id: 0,
-            login: 'Guest',
-        };
+        identity = typeof identity === "object" ? identity : {};
         identity.token = localStorage.token;
         identity.isLogged = typeof identity.token !== "undefined";
         if(identity.isLogged) {
@@ -84,10 +69,8 @@ export default {
             identity.id = 0;
             identity.login = 'Guest';
         }
-        //alert(this.isGuest);
         this.identity = identity;
         event.trigger('account-auth-change', identity);
-        //alert(this.isGuest);
     },
 
     getToken() {
@@ -97,13 +80,8 @@ export default {
     logout() {
         delete localStorage.token;
         this.setIdentity({});
-        //if (cb) cb();
         event.trigger('account-logout');
         this.onChange();
-    },
-
-    loggedIn() {
-        return !!localStorage.token
     },
 
     onChange() {

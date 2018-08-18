@@ -3,8 +3,7 @@
         <div class="wrap">
             <header class="main-header">
                 <navbar>
-                    <a slot="brand" href="#"></a>
-                    <router-link class="navbar-brand" to="/">{{ config.app.title }}</router-link>
+                    <router-link slot="brand" class="navbar-brand" to="/">{{ config.app.title }}</router-link>
                     <template slot="collapse">
                         <navbar-nav>
 
@@ -42,9 +41,9 @@
             }
         },
 
-        created() {
-            auth.init();
-        },
+        /*created() {
+
+        },*/
 
         /*components: {
             HeaderBar

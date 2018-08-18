@@ -8,7 +8,7 @@ export default {
     },
 
     requireAuth: function (to, from, next) {
-        if (!auth.loggedIn()) {
+        if (!auth.identity.isLogged) {
             next({
                 path: '/login',
                 query: {redirect: to.fullPath}
