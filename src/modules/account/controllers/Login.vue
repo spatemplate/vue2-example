@@ -28,7 +28,7 @@
 </template>
 
 <script>
-    import auth from '../models/auth'
+    import AuthModel from '../models/AuthModel'
 
     export default {
         data() {
@@ -39,7 +39,7 @@
         },
         methods: {
             login() {
-                auth.login(this.email, this.pass)
+                AuthModel.login(this.email, this.pass)
             }
         }
     }

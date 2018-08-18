@@ -18,17 +18,17 @@
 </template>
 
 <script>
-    import post from "../models/post";
-    import store from "../stores/post";
+    import PostModel from "../models/PostModel";
+    import store from '../../../config/store'
 
     export default {
         data() {
             return {
-                posts: store.state.collection,
+                posts: store.post.state.collection,
             }
         },
         created() {
-            post.all();
+            PostModel.all();
         },
     };
 </script>

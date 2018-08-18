@@ -1,11 +1,11 @@
 <script>
-    import auth from '../models/auth'
-    import router from "../../../config/routes";
+    import AuthModel from '../models/AuthModel'
+    import Router from "../../../helpers/Router";
 
     export default {
         created() {
-            auth.logout();
-            router.push('/');
+            AuthModel.logout();
+            Router.push('/');
         }
     }
 </script>

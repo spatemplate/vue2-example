@@ -1,31 +1,31 @@
-import rest from "../../../helpers/rest";
-import event from "../../../helpers/event";
-import authStore from "../stores/auth";
-import router from "../../../config/routes";
+import Rest from "../../../helpers/Rest";
+import Event from "../../../helpers/Event";
+import authStore from "../stores/AuthStore";
+import Router from "../../../helpers/Router";
 
 export default {
 
     login(email, pass) {
         if (authStore.getters.token()) {
             this.onChange();
-            event.trigger('account-login-already-logged-exception', authStore.state.identity);
+            Event.trigger('account-login-already-logged-exception', authStore.state.identity);
             return
         }
-        rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
+        Rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
             if (response.status < 400) {
                 localStorage.token = response.data.token;
                 this.setIdentity(response.data);
-                event.trigger('account-login', response.data);
+                Event.trigger('account-login', response.data);
                 this.onChange();
             } else if(response.status === 422) {
-                event.trigger('account-login-exception', {
+                Event.trigger('account-login-exception', {
                     exception: 'Unprocessible entity',
                     code: 422,
                     data: response.data,
                 });
                 this.onChange()
             } else {
-                event.trigger('account-login-exception', {
+                Event.trigger('account-login-exception', {
                     exception: 'Unknown error',
                     code: 1,
                     data: response.data,
@@ -40,16 +40,16 @@ export default {
         if(!authStore.getters.isLogged()) {
             return;
         }
-        rest.get('v1/auth', null, null, (response) => {
+        Rest.get('v1/auth', null, null, (response) => {
             if (response.status === 401) {
                 this.logout(function(){});
-                event.trigger('account-get-identity', {});
+                Event.trigger('account-get-identity', {});
                 this.setIdentity();
-                router.push('/login');
+                Router.push('/login');
             }
             if (response.status >= 200) {
                 this.setIdentity(response.data);
-                event.trigger('account-get-identity', response.data);
+                Event.trigger('account-get-identity', response.data);
             }
         });
     },
@@ -70,7 +70,7 @@ export default {
             identity.login = 'Guest';
         }
         authStore.dispatch('setIdentity', identity);
-        event.trigger('account-auth-change', identity);
+        Event.trigger('account-auth-change', identity);
     },
 
     logout() {
@@ -79,12 +79,12 @@ export default {
         }
         authStore.dispatch('deleteToken');
         this.setIdentity({});
-        event.trigger('account-logout');
+        Event.trigger('account-logout');
         this.onChange();
     },
 
     onChange() {
-        event.trigger('account-auth-change', authStore.state.identity);
+        Event.trigger('account-auth-change', authStore.state.identity);
     },
 
 }

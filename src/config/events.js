@@ -1,39 +1,39 @@
-import event from "../helpers/event";
-import router from "../helpers/router";
+import Event from "../helpers/Event";
+import Router from "../helpers/Router";
 import {Notification} from 'uiv'
 
 export default {
 
     init() {
 
-        event.attach('account-logout', function (data) {
+        Event.attach('account-logout', function (data) {
             Notification.notify({
                 type: 'success',
                 title: 'Log out',
                 content: 'You are success logout form system!',
             });
-            router.push('/');
+            Router.push('/');
         });
 
-        event.attach('account-login', function (data) {
+        Event.attach('account-login', function (data) {
             Notification.notify({
                 type: 'success',
                 title: 'Hello ' + data.login,
                 content: 'You are success login in system!',
             });
-            router.push('/');
+            Router.push('/');
         });
 
-        event.attach('account-login-already-logged-exception', function (data) {
+        Event.attach('account-login-already-logged-exception', function (data) {
             Notification.notify({
                 type: 'warning',
                 title: 'log in',
                 content: 'You already authed!',
             });
-            router.push('/');
+            Router.push('/');
         });
 
-        event.attach('account-login-exception', function (data) {
+        Event.attach('account-login-exception', function (data) {
             Notification.notify({
                 type: 'danger',
                 title: 'Log in',
@@ -41,27 +41,27 @@ export default {
             })
         });
 
-        event.attach('account-get-identity', function (data) {
+        Event.attach('account-get-identity', function (data) {
 
         });
 
-        event.attach('account-auth-change', function (identity) {
+        Event.attach('account-auth-change', function (identity) {
 
         });
 
-        event.attach('post-list', function () {
+        Event.attach('post-list', function () {
 
         });
 
-        event.attach('rest-unauthorized-exception', function () {
+        Event.attach('rest-unauthorized-exception', function () {
             Notification.notify({
                 type: 'warning',
                 title: 'Need authorization!',
             });
-            router.push('/login');
+            Router.push('/login');
         });
 
-        event.attach('rest-server-exception', function () {
+        Event.attach('rest-server-exception', function () {
             Notification.notify({
                 type: 'danger',
                 title: 'Server error!',
@@ -69,7 +69,7 @@ export default {
             window.history.back();
         });
 
-        event.attach('rest-forbidden-exception', function () {
+        Event.attach('rest-forbidden-exception', function () {
             Notification.notify({
                 type: 'warning',
                 title: 'Forbidden!',

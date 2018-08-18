@@ -1,7 +1,7 @@
 <template>
     <div class="wrap">
         <header class="main-header">
-            <header-bar></header-bar>
+            <nav-bar></nav-bar>
         </header>
         <div class="container">
             <router-view></router-view>
@@ -10,11 +10,11 @@
 </template>
 
 <script>
-    import HeaderBar from './HeaderBar'
+    import NavBar from './NavBar'
 
     export default {
         components: {
-            HeaderBar,
+            NavBar,
         }
     }
 </script>

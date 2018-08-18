@@ -1,11 +1,11 @@
-import auth from "../modules/account/models/auth";
+import AuthModel from "../modules/account/models/AuthModel";
 import events from "./events";
 
 export default {
 
     init() {
         events.init();
-        auth.init();
+        AuthModel.init();
     }
 
 };
