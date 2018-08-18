@@ -29,20 +29,12 @@
 
 <script>
     import auth from '../models/auth'
-    import * as uiv from 'uiv'
-    import Vue from 'vue'
-    import notify from "../../../components/notify";
-
-    Vue.use(uiv);
 
     export default {
         data() {
             return {
                 email: '',
                 pass: '',
-                error: false,
-               // exception: false,
-                identity: null,
             }
         },
         methods: {

@@ -74,7 +74,7 @@ export default {
     },
 
     logout() {
-        if(!authStore.state.identity.isLogged) {
+        if(!authStore.getters.isLogged()) {
             return;
         }
         authStore.dispatch('deleteToken');

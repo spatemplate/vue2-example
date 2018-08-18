@@ -1,9 +1,7 @@
-import config from "./config";
 import axios from "axios";
-//import auth from "../modules/account/models/auth";
-import authHelper from "../modules/account/helpers/authHelper";
 import event from "./event";
 import auth from "../modules/account/stores/auth";
+import store from "./store";
 
 function errorHandle(response) {
     if (response.status >= 500) {
@@ -22,7 +20,7 @@ export default {
     post: function (uri, data, headers, cb) {
         event.trigger('rest-before', {uri: uri, data: data, headers: headers, cb: cb});
         const axiosInstance = this.getInstance();
-        axiosInstance.post(config.server.domain + '/' + uri, data, cb)
+        axiosInstance.post(uri, data, cb)
             .then(response => {
                 cb(response);
             })
@@ -49,7 +47,7 @@ export default {
 
     getInstance() {
          return axios.create({
-            baseURL: config.server.domain + '/',
+            baseURL: store.config.server.domain + '/',
             headers: {'Authorization': auth.getters.token()}
         });
     },

@@ -3,7 +3,7 @@
         <div class="wrap">
             <header class="main-header">
                 <navbar>
-                    <router-link slot="brand" class="navbar-brand" to="/">{{ config.app.title }}</router-link>
+                    <router-link slot="brand" class="navbar-brand" to="/">{{ store.config.app.title }}</router-link>
                     <template slot="collapse">
                         <navbar-nav>
 
@@ -13,9 +13,9 @@
                         </navbar-nav>
 
                         <navbar-nav right>
-                            <li><router-link v-if="auth.identity.isLogged" to="/profile" >{{ auth.identity.login }}</router-link></li>
-                            <li><router-link v-if="auth.identity.isLogged" to="/logout" >log out</router-link></li>
-                            <li><router-link v-if="!auth.identity.isLogged" to="/login">Log in</router-link></li>
+                            <li><router-link v-if="store.auth.getters.isLogged()" to="/profile" >{{ store.auth.state.identity.login }}</router-link></li>
+                            <li><router-link v-if="store.auth.getters.isLogged()" to="/logout" >log out</router-link></li>
+                            <li><router-link v-if="!store.auth.getters.isLogged()" to="/login">Log in</router-link></li>
                         </navbar-nav>
 
                     </template>
@@ -30,16 +30,14 @@
 </template>
 
 <script>
-    import auth from '../../../modules/account/stores/auth'
     import store from '../../../components/store'
-    import config from '../../../components/config'
+    //import config from '../../../components/config'
 
     export default {
         name: 'app',
         data() {
             return {
-                config: config,
-                auth: store.state.auth,
+                store: store,
             }
         },
     }

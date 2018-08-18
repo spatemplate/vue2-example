@@ -6,10 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        identity: {
-
-        },
-        token: localStorage.token,
+        identity: {},
     },
     mutations: {
         setIdentity(state, identity) {
@@ -23,6 +20,9 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        auth(context, login, pass) {
+
+        },
         setIdentity(context, identity) {
             context.commit('setIdentity', identity);
         },

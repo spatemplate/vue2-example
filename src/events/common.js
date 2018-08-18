@@ -52,11 +52,9 @@ export default {
 
         event.attach('unauthorized-exception', function (data) {
            Notification.notify({
-               type: 'danger',
+               type: 'warning',
                title: 'Need authorization!',
            });
-            auth.logout();
-            authHelper.redirectToLoginPage();
            //router.push('/login');
        });
 
