@@ -13,7 +13,8 @@
                         </navbar-nav>
 
                         <navbar-nav right>
-                            <li><router-link v-if="auth.identity.isLogged" to="/logout" >{{ auth.identity.login }} log out</router-link></li>
+                            <li><router-link v-if="auth.identity.isLogged" to="/profile" >{{ auth.identity.login }}</router-link></li>
+                            <li><router-link v-if="auth.identity.isLogged" to="/logout" >log out</router-link></li>
                             <li><router-link v-if="!auth.identity.isLogged" to="/login">Log in</router-link></li>
                         </navbar-nav>
 

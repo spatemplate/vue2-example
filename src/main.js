@@ -11,7 +11,7 @@ Vue.use(uiv);
 
 CommonEvents.registerAll();
 
-vm = new Vue({
+new Vue({
     router,
     config,
     created() {

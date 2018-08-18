@@ -5,8 +5,8 @@ import event from "../../../components/event";
 import authHelper from "../helpers/authHelper";
 
 export default {
+
     identity: {},
-    //isGuest: true,
 
     login(email, pass) {
         if (localStorage.token) {
@@ -40,11 +40,14 @@ export default {
     },
 
     getIdentityFromApi() {
-        rest.get('v1/auth', null, null, function (response) {
+        if(!this.identity.isLogged) {
+            return;
+        }
+        rest.get('v1/auth', null, null, (response) => {
             if (response.status === 401) {
-                //this.logout(function(){});
+                this.logout(function(){});
                 event.trigger('account-get-identity', {});
-                this.setIdentity({});
+                this.setIdentity();
                 authHelper.redirectToLoginPage();
             }
             if (response.status >= 200) {
@@ -56,6 +59,7 @@ export default {
 
     init() {
         this.setIdentity();
+        this.getIdentityFromApi();
     },
 
     setIdentity(identity) {
