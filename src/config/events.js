@@ -1,6 +1,6 @@
 import event from "../helpers/event";
+import router from "../helpers/router";
 import {Notification} from 'uiv'
-import router from "../config/router";
 
 export default {
 
@@ -66,7 +66,6 @@ export default {
                 type: 'danger',
                 title: 'Server error!',
             });
-            //router.push('/');
             window.history.back();
         });
 
@@ -75,7 +74,6 @@ export default {
                 type: 'warning',
                 title: 'Forbidden!',
             });
-            //router.push('/');
             window.history.back();
         });
 

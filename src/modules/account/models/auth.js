@@ -1,7 +1,7 @@
 import rest from "../../../helpers/rest";
 import event from "../../../helpers/event";
 import authStore from "../stores/auth";
-import router from "../../../config/router";
+import router from "../../../config/routes";
 
 export default {
 

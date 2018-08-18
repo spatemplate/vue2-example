@@ -28,12 +28,7 @@
             }
         },
         created() {
-            this.all();
-        },
-        methods: {
-            all() {
-                post.all();
-            },
+            post.all();
         },
     };
 </script>

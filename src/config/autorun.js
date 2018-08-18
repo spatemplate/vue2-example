@@ -1,10 +1,10 @@
 import auth from "../modules/account/models/auth";
-import CommonEvents from "../events/common";
+import events from "./events";
 
 export default {
 
     runAll() {
-        CommonEvents.registerAll();
+        events.registerAll();
         auth.init();
     }
 
