@@ -1,9 +1,9 @@
-import About from '../modules/dashboard/controllers/About.vue'
-import Dashboard from '../modules/dashboard/controllers/Dashboard.vue'
-import Login from '../modules/account/controllers/Login.vue'
-import Logout from '../modules/account/controllers/Logout.vue'
-import PostAll from '../modules/post/controllers/All.vue'
-import PostOne from '../modules/post/controllers/One.vue'
+import About from '../modules/dashboard/pages/About.vue'
+import Dashboard from '../modules/dashboard/pages/Dashboard.vue'
+import Login from '../modules/account/pages/Login.vue'
+import Logout from '../modules/account/pages/Logout.vue'
+import PostAll from '../modules/post/pages/All.vue'
+import PostOne from '../modules/post/pages/One.vue'
 
 export default [
     {path: '/', component: Dashboard},
