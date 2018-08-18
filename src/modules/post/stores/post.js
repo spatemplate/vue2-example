@@ -10,7 +10,6 @@ export default new Vuex.Store({
     },
     mutations: {
         setCollection(state, collection) {
-            console.log(collection);
             state.collection = collection;
         }
     },
