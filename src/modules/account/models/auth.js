@@ -1,5 +1,3 @@
-/* globals localStorage */
-
 import rest from "../../../components/rest";
 import event from "../../../components/event";
 import authHelper from "../helpers/authHelper";

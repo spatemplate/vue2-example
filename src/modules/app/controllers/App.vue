@@ -41,13 +41,5 @@
                 auth: auth,
             }
         },
-
-        /*created() {
-
-        },*/
-
-        /*components: {
-            HeaderBar
-        },*/
     }
 </script>

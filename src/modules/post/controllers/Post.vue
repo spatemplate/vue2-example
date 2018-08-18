@@ -3,7 +3,6 @@
         <ul>
             <li v-for="post in posts">
                 <router-link
-
                         active-class="is-active"
                         class="link"
                         :to="{ name: 'post', params: { id: post.id } }">
@@ -19,31 +18,50 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import rest from "../../../components/rest";
+    import post from "../models/post";
+    import { Notification } from 'uiv'
+    import event from "../../../components/event";
+    import store from "../stores/post";
 
-    export default {
+
+    let controller = {
+
         data() {
             return {
-                posts: [],
-                endpoint: 'https://jsonplaceholder.typicode.com/posts/',
+                posts: store.state.collection,
             }
         },
 
         created() {
-            this.getAllPosts();
+            this.all();
         },
-
         methods: {
-            getAllPosts() {
-                rest.get('v1/city', null, null, (response) => {
-                    if (response.status < 400) {
-                        this.posts = response.data;
-                    } else {
-                        this.posts = [];
-                    }
-                });
+            all() {
+               /* post.all(function (response) {
+                    console.log(response);
+                    //if (response.status < 400) {
+                    this.posts = response;
+                    //}
+                });*/
+                post.all();
+            },
+            setCollection(collection) {
+                //this.posts = collection;
             }
-        }
-    }
+        },
+    };
+
+    event.attach('post-list', function () {
+        //console.log(data);
+        //Post.setList(data);
+        //controller.setCollection(post.collection);
+        Notification.notify({
+            type: 'success',
+            title: 'post',
+            content: 'list',
+        })
+    });
+
+    export default controller;
+
 </script>

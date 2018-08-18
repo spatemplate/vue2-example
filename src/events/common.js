@@ -3,6 +3,7 @@ import { Notification } from 'uiv'
 import authHelper from "../modules/account/helpers/authHelper";
 import router from "../components/router";
 import App from "../modules/app/controllers/App";
+import Post from "../modules/post/controllers/Post";
 import auth from "../modules/account/models/auth";
 
 export default {
@@ -62,11 +63,13 @@ export default {
        event.attach('account-get-identity', function (data) {
            //alert('rwerw');
            //App.setIdentity(data);
-           Notification.notify({
+           //auth.setIdentity(data);
+           //console.log(data);
+           /*Notification.notify({
                type: 'success',
                title: 'identity',
-               content: 'data.toJson()',
-           })
+               content: data.toJson(),
+           })*/
        });
 
         event.attach('account-auth-change', function (identity) {
@@ -78,6 +81,8 @@ export default {
                 content: identity.isLogged,
             })*/
         });
+
+
 
     }
 

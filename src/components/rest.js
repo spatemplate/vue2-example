@@ -36,23 +36,12 @@ export default {
 
     get: function (uri, data, headers, cb) {
         event.trigger('rest-before', {uri: uri, data: data, headers: headers, cb: cb});
-        //headers = typeof headers === "object" ? headers : {};
-        //headers['Authorization'] = auth.identity.token;
-
         const axiosInstance = axios.create({
             baseURL: config.server.domain + '/',
-            //timeout: 1000,
             headers: {'Authorization': auth.identity.token}
         });
-
-        /*const axiosInstance = axios.create({
-            //headers: headers,
-            "Authorization": "qwertyui",
-        });*/
-
         axiosInstance.get(uri, cb)
             .then(response => {
-                //console.log(response.data);
                 cb(response);
                 event.trigger('rest-end-success', response);
             })
