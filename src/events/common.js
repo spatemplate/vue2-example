@@ -54,6 +54,8 @@ export default {
                type: 'danger',
                title: 'Need authorization!',
            });
+            auth.logout();
+            authHelper.redirectToLoginPage();
            //router.push('/login');
        });
 

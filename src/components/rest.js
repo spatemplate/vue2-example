@@ -9,8 +9,7 @@ function errorHandle(response) {
         alert('Server error!!');
     }
     if (response.status === 401) {
-        auth.logout();
-        authHelper.redirectToLoginPage();
+        event.trigger('unauthorized-exception');
     }
     if (response.status === 403) {
         alert('Forbidden!');
@@ -37,11 +36,21 @@ export default {
 
     get: function (uri, data, headers, cb) {
         event.trigger('rest-before', {uri: uri, data: data, headers: headers, cb: cb});
+        //headers = typeof headers === "object" ? headers : {};
+        //headers['Authorization'] = auth.identity.token;
+
         const axiosInstance = axios.create({
-            headers: headers,
+            baseURL: config.server.domain + '/',
+            //timeout: 1000,
+            headers: {'Authorization': auth.identity.token}
         });
-        axiosInstance.headers.Authorization = auth.getToken();
-        axiosInstance.get(config.server.domain + '/' + uri, cb)
+
+        /*const axiosInstance = axios.create({
+            //headers: headers,
+            "Authorization": "qwertyui",
+        });*/
+
+        axiosInstance.get(uri, cb)
             .then(response => {
                 //console.log(response.data);
                 cb(response);

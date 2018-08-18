@@ -1,12 +1,18 @@
 <template>
     <div v-if="posts">
-        <router-link
-                v-for="post in posts"
-                active-class="is-active"
-                class="link"
-                :to="{ name: 'post', params: { id: post.id } }">
-            {{post.id}}. {{post.title}}
-        </router-link>
+        <ul>
+            <li v-for="post in posts">
+                <router-link
+
+                        active-class="is-active"
+                        class="link"
+                        :to="{ name: 'post', params: { id: post.id } }">
+                    {{post.name}}
+                </router-link>
+            </li>
+        </ul>
+
+
     </div>
 
 
@@ -14,6 +20,7 @@
 
 <script>
     import axios from 'axios'
+    import rest from "../../../components/rest";
 
     export default {
         data() {
@@ -29,14 +36,13 @@
 
         methods: {
             getAllPosts() {
-                axios.get(this.endpoint)
-                    .then(response => {
+                rest.get('v1/city', null, null, (response) => {
+                    if (response.status < 400) {
                         this.posts = response.data;
-                    })
-                    .catch(error => {
-                        console.log('-----error-------');
-                        console.log(error);
-                    })
+                    } else {
+                        this.posts = [];
+                    }
+                });
             }
         }
     }

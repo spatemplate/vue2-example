@@ -77,11 +77,10 @@ export default {
         event.trigger('account-auth-change', identity);
     },
 
-    getToken() {
-        return localStorage.token
-    },
-
     logout() {
+        if(!this.identity.isLogged) {
+            return;
+        }
         delete localStorage.token;
         this.setIdentity({});
         event.trigger('account-logout');
