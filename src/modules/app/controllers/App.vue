@@ -30,7 +30,8 @@
 </template>
 
 <script>
-    import auth from '../../../modules/account/models/auth'
+    import auth from '../../../modules/account/stores/auth'
+    import store from '../../../components/store'
     import config from '../../../components/config'
 
     export default {
@@ -38,7 +39,7 @@
         data() {
             return {
                 config: config,
-                auth: auth,
+                auth: auth.state,
             }
         },
     }

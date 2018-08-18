@@ -1,15 +1,14 @@
 import rest from "../../../components/rest";
 import event from "../../../components/event";
 import authHelper from "../helpers/authHelper";
+import store from "../stores/auth";
 
 export default {
-
-    identity: {},
 
     login(email, pass) {
         if (localStorage.token) {
             this.onChange();
-            event.trigger('account-login-already-logged-exception', this.identity);
+            event.trigger('account-login-already-logged-exception', store.state.identity);
             return
         }
         rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
@@ -38,7 +37,7 @@ export default {
     },
 
     getIdentityFromApi() {
-        if(!this.identity.isLogged) {
+        if(!store.state.identity.isLogged) {
             return;
         }
         rest.get('v1/auth', null, null, (response) => {
@@ -71,12 +70,13 @@ export default {
             identity.id = 0;
             identity.login = 'Guest';
         }
-        this.identity = identity;
+        //this.identity = identity;
+        store.dispatch('setIdentity', identity);
         event.trigger('account-auth-change', identity);
     },
 
     logout() {
-        if(!this.identity.isLogged) {
+        if(!store.state.identity.isLogged) {
             return;
         }
         delete localStorage.token;
@@ -86,7 +86,7 @@ export default {
     },
 
     onChange() {
-        event.trigger('account-auth-change', this.identity);
+        event.trigger('account-auth-change', store.state.identity);
     },
 
 }
