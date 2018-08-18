@@ -8,12 +8,7 @@ import PostOne from '../modules/post/pages/One.vue'
 export default [
     {path: '/', component: Dashboard},
     {path: '/post', component: PostAll},
-    {
-        path: '/post/:id',
-        name: 'post',
-        component: PostOne,
-        props: true,
-    },
+    {path: '/post/:id', component: PostOne, name: 'post', props: true},
     {path: '/about', component: About},
     {path: '/dashboard', component: Dashboard},
     {path: '/login', component: Login},
