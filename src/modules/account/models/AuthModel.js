@@ -1,14 +1,14 @@
 import Rest from "../../../helpers/Rest";
 import Event from "../../../helpers/Event";
-import authStore from "../stores/AuthStore";
+import AuthStore from "../stores/AuthStore";
 import Router from "../../../helpers/Router";
 
 export default {
 
     login(email, pass) {
-        if (authStore.getters.token()) {
+        if (AuthStore.getters.token()) {
             this.onChange();
-            Event.trigger('account-login-already-logged-exception', authStore.state.identity);
+            Event.trigger('account-login-already-logged-exception', AuthStore.state.identity);
             return
         }
         Rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
@@ -37,7 +37,7 @@ export default {
     },
 
     getIdentityFromApi() {
-        if(!authStore.getters.isLogged()) {
+        if(!AuthStore.getters.isLogged()) {
             return;
         }
         Rest.get('v1/auth', null, null, (response) => {
@@ -61,7 +61,7 @@ export default {
 
     setIdentity(identity) {
         identity = typeof identity === "object" ? identity : {};
-        identity.isLogged = authStore.getters.isLogged();
+        identity.isLogged = AuthStore.getters.isLogged();
         if(identity.isLogged) {
             identity.id = 1;
             identity.login = 'User';
@@ -69,22 +69,22 @@ export default {
             identity.id = 0;
             identity.login = 'Guest';
         }
-        authStore.dispatch('setIdentity', identity);
+        AuthStore.dispatch('setIdentity', identity);
         Event.trigger('account-auth-change', identity);
     },
 
     logout() {
-        if(!authStore.getters.isLogged()) {
+        if(!AuthStore.getters.isLogged()) {
             return;
         }
-        authStore.dispatch('deleteToken');
+        AuthStore.dispatch('deleteToken');
         this.setIdentity({});
         Event.trigger('account-logout');
         this.onChange();
     },
 
     onChange() {
-        Event.trigger('account-auth-change', authStore.state.identity);
+        Event.trigger('account-auth-change', AuthStore.state.identity);
     },
 
 }
