@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import * as uiv from 'uiv'
-import router from './components/router'
-import App from './modules/app/controllers/App'
+import router from './helpers/router'
+import App from './components/App'
 //import config from './components/config'
-import autorun from "./components/autorun";
+import autorun from "./helpers/autorun";
 //import store from './components/store'
 
 Vue.use(uiv);

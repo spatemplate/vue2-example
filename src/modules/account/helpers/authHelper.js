@@ -1,5 +1,5 @@
 import auth from "../models/auth";
-import router from "../../../components/router";
+import router from "../../../helpers/router";
 
 export default {
 

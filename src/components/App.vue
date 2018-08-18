@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import store from '../../../components/store'
+    import store from '../helpers/store'
     //import config from '../../../components/config'
 
     export default {

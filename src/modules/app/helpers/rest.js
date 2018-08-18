@@ -1,17 +1,17 @@
 import axios from "axios";
 import event from "./event";
-import auth from "../modules/account/stores/auth";
-import store from "./store";
+import auth from "../../account/stores/auth";
+import store from "../../../helpers/store";
 
 function errorHandle(response) {
     if (response.status >= 500) {
-        alert('Server error!!');
+        event.trigger('rest-server-exception');
     }
     if (response.status === 401) {
-        event.trigger('unauthorized-exception');
+        event.trigger('rest-unauthorized-exception');
     }
     if (response.status === 403) {
-        alert('Forbidden!');
+        event.trigger('rest-forbidden-exception');
     }
 }
 
