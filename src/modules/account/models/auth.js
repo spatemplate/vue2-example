@@ -1,14 +1,14 @@
 import rest from "../../../components/rest";
 import event from "../../../components/event";
 import authHelper from "../helpers/authHelper";
-import store from "../stores/auth";
+import authStore from "../stores/auth";
 
 export default {
 
     login(email, pass) {
-        if (localStorage.token) {
+        if (authStore.getters.token()) {
             this.onChange();
-            event.trigger('account-login-already-logged-exception', store.state.identity);
+            event.trigger('account-login-already-logged-exception', authStore.state.identity);
             return
         }
         rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
@@ -37,7 +37,7 @@ export default {
     },
 
     getIdentityFromApi() {
-        if(!store.state.identity.isLogged) {
+        if(!authStore.getters.isLogged()) {
             return;
         }
         rest.get('v1/auth', null, null, (response) => {
@@ -56,13 +56,12 @@ export default {
 
     init() {
         this.setIdentity();
-        this.getIdentityFromApi();
+        //this.getIdentityFromApi();
     },
 
     setIdentity(identity) {
         identity = typeof identity === "object" ? identity : {};
-        identity.token = localStorage.token;
-        identity.isLogged = typeof identity.token !== "undefined";
+        identity.isLogged = authStore.getters.isLogged();
         if(identity.isLogged) {
             identity.id = 1;
             identity.login = 'User';
@@ -70,23 +69,22 @@ export default {
             identity.id = 0;
             identity.login = 'Guest';
         }
-        //this.identity = identity;
-        store.dispatch('setIdentity', identity);
+        authStore.dispatch('setIdentity', identity);
         event.trigger('account-auth-change', identity);
     },
 
     logout() {
-        if(!store.state.identity.isLogged) {
+        if(!authStore.state.identity.isLogged) {
             return;
         }
-        delete localStorage.token;
+        authStore.dispatch('deleteToken');
         this.setIdentity({});
         event.trigger('account-logout');
         this.onChange();
     },
 
     onChange() {
-        event.trigger('account-auth-change', store.state.identity);
+        event.trigger('account-auth-change', authStore.state.identity);
     },
 
 }

@@ -50,7 +50,7 @@ export default {
     getInstance() {
          return axios.create({
             baseURL: config.server.domain + '/',
-            headers: {'Authorization': auth.state.identity.token}
+            headers: {'Authorization': auth.getters.token()}
         });
     },
 

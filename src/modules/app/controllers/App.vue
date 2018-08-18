@@ -39,7 +39,7 @@
         data() {
             return {
                 config: config,
-                auth: auth.state,
+                auth: store.state.auth,
             }
         },
     }
