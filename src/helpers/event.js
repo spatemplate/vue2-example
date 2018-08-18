@@ -1,18 +1,18 @@
+const handlers = [];
+
 export default {
 
-    handlers: [],
-
     attach: function (name, cb) {
-        this.handlers.push({name: name, callback: cb});
+        handlers.push({name: name, callback: cb});
     },
 
     trigger(name, event) {
-        if (this.handlers.length < 1) {
+        if (handlers.length < 1) {
             return;
         }
-        for (let i = 0; i < this.handlers.length; i++) {
-            if(this.handlers[i].name === name) {
-                this.handlers[i].callback(event);
+        for (let i = 0; i < handlers.length; i++) {
+            if(handlers[i].name === name) {
+                handlers[i].callback(event);
             }
         }
     }

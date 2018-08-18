@@ -1,17 +1,19 @@
 import Vue from 'vue'
 import * as uiv from 'uiv'
 import router from './helpers/router'
-import App from './components/App'
-import autorun from "./config/autorun";
+import Layout from './components/Layout'
+import AutoRun from "./config/autorun";
 
 Vue.use(uiv);
 
 new Vue({
+    el: '#app',
     router,
     created() {
-        autorun.runAll();
+        AutoRun.init();
     },
-    template: '<App/>',
-    components: { App }
-
-}).$mount('#app');
+    template: '<Layout/>',
+    components: {
+        Layout,
+    }
+});

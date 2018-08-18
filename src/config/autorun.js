@@ -3,8 +3,8 @@ import events from "./events";
 
 export default {
 
-    runAll() {
-        events.registerAll();
+    init() {
+        events.init();
         auth.init();
     }
 

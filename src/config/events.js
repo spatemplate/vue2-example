@@ -4,7 +4,7 @@ import {Notification} from 'uiv'
 
 export default {
 
-    registerAll() {
+    init() {
 
         event.attach('account-logout', function (data) {
             Notification.notify({
