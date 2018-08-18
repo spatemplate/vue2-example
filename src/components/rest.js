@@ -9,7 +9,7 @@ function errorHandle(response) {
         alert('Server error!!');
     }
     if (response.status === 401) {
-        auth.logout(function () {});
+        auth.logout();
         authHelper.redirectToLoginPage();
     }
     if (response.status === 403) {

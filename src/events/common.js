@@ -15,9 +15,9 @@ export default {
                 title: 'Log out',
                 content: 'You are success logout form system!',
             });
-            App.setIdentity({});
+            //App.setIdentity({});
             //auth.getIdentity();
-            //router.push('/');
+            router.push('/');
         });
 
         event.attach('account-login', function (data) {
@@ -27,7 +27,7 @@ export default {
                 content: 'You are success login in system!',
             });
             //App.setIdentity(data);
-            //router.push('/');
+            router.push('/');
         });
 
         event.attach('account-login-already-logged-exception', function (data) {
@@ -37,7 +37,7 @@ export default {
                 content: 'You already authed!',
             });
             //App.setIdentity(data);
-            //router.push('/');
+            router.push('/');
         });
 
         event.attach('account-login-exception', function (data) {
@@ -59,7 +59,7 @@ export default {
 
        event.attach('account-get-identity', function (data) {
            //alert('rwerw');
-           App.setIdentity(data);
+           //App.setIdentity(data);
            Notification.notify({
                type: 'success',
                title: 'identity',
@@ -67,14 +67,14 @@ export default {
            })
        });
 
-        event.attach('account-auth-change', function (loggedIn) {
+        event.attach('account-auth-change', function (identity) {
             //alert(loggedIn);
-            App.setIsLogged(loggedIn);
-            Notification.notify({
+            //App.setIsLogged(loggedIn);
+            /*Notification.notify({
                 type: 'success',
                 title: 'account-auth-change',
-                content: loggedIn,
-            })
+                content: identity.isLogged,
+            })*/
         });
 
     }

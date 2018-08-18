@@ -6,13 +6,11 @@ import authHelper from "../helpers/authHelper";
 
 export default {
     identity: {},
-    isGuest: true,
+    //isGuest: true,
 
-    login(email, pass, cb) {
-        cb = arguments[arguments.length - 1];
+    login(email, pass) {
         if (localStorage.token) {
-            if (cb) cb(true);
-            this.onChange(true);
+            this.onChange();
             event.trigger('account-login-already-logged-exception', this.identity);
             return
         }
@@ -20,43 +18,29 @@ export default {
             if (response.status < 400) {
                 localStorage.token = response.data.token;
                 this.setIdentity(response.data);
-                if (cb) cb(response.data);
                 event.trigger('account-login', response.data);
-                this.onChange(true);
+                this.onChange();
             } else if(response.status === 422) {
-                if (cb) cb({
-                    exception: 'Unprocessible entity',
-                    code: 422,
-                    data: response.data,
-                });
                 event.trigger('account-login-exception', {
                     exception: 'Unprocessible entity',
                     code: 422,
                     data: response.data,
                 });
-                this.onChange(false)
+                this.onChange()
             } else {
-                if (cb) cb({
-                    exception: 'Unknown error',
-                    code: 1,
-                    data: response.data,
-                });
                 event.trigger('account-login-exception', {
                     exception: 'Unknown error',
                     code: 1,
                     data: response.data,
                 });
-                this.onChange(false)
+                this.onChange()
             }
         });
 
     },
 
     getIdentityFromApi() {
-        //alert('this.isGuest');
-        /*let cb = ;*/
         rest.get('v1/auth', null, null, function (response) {
-            //alert('response');
             if (response.status === 401) {
                 //this.logout(function(){});
                 event.trigger('account-get-identity', {});
@@ -83,15 +67,26 @@ export default {
 
     init() {
 
-        this.setIdentity({});
+        this.setIdentity();
     },
 
     setIdentity(identity) {
-
-        this.identity = identity;
-        this.isGuest = typeof localStorage.token === "undefined";
+        identity = typeof identity === "object" ? identity : {
+            id: 0,
+            login: 'Guest',
+        };
+        identity.token = localStorage.token;
+        identity.isLogged = typeof identity.token !== "undefined";
+        if(identity.isLogged) {
+            identity.id = 1;
+            identity.login = 'User';
+        } else {
+            identity.id = 0;
+            identity.login = 'Guest';
+        }
         //alert(this.isGuest);
-        event.trigger('account-auth-change', !this.isGuest);
+        this.identity = identity;
+        event.trigger('account-auth-change', identity);
         //alert(this.isGuest);
     },
 
@@ -99,20 +94,20 @@ export default {
         return localStorage.token
     },
 
-    logout(cb) {
+    logout() {
         delete localStorage.token;
         this.setIdentity({});
-        if (cb) cb();
+        //if (cb) cb();
         event.trigger('account-logout');
-        this.onChange(false);
+        this.onChange();
     },
 
     loggedIn() {
         return !!localStorage.token
     },
 
-    onChange(loggedIn) {
-        event.trigger('account-auth-change', loggedIn);
+    onChange() {
+        event.trigger('account-auth-change', this.identity);
     },
 
 }

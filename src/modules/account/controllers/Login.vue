@@ -47,15 +47,7 @@
         },
         methods: {
             login() {
-                auth.login(this.email, this.pass, data => {
-                    if (data.exception) {
-                        this.error = true;
-                        this.identity = null;
-                    } else {
-                        this.identity = data;
-                        this.$router.replace(this.$route.query.redirect || '/')
-                    }
-                })
+                auth.login(this.email, this.pass)
             }
         }
     }
