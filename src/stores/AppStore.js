@@ -23,7 +23,6 @@ export default new Vuex.Store({
         setLoading(state) {
             state.loading = state.count > 0;
         },
-
     },
     actions: {
         showLoading(context) {

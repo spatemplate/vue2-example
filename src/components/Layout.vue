@@ -10,7 +10,11 @@
 </template>
 
 <script>
+    import Vue from 'vue'
+    import * as uiv from 'uiv'
     import NavBar from './NavBar'
+
+    Vue.use(uiv);
 
     export default {
         components: {
