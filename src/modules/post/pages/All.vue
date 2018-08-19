@@ -1,30 +1,35 @@
 <template>
-    <div v-if="store.post.state.collection">
-        <ul>
-            <li v-for="post in store.post.state.collection">
-                <router-link
-                        active-class="is-active"
-                        class="link"
-                        :to="{ name: 'post', params: { id: post.id } }">
-                    {{post.name}}
-                </router-link>
-            </li>
-        </ul>
+    <div>
+        <div v-if="state.collection">
+            <ul>
+                <li v-for="entity in state.collection">
+                    <router-link
+                            active-class="is-active"
+                            class="link"
+                            :to="{ name: 'post', params: { id: entity.id } }">
+                        {{entity.name}}
+                    </router-link>
+                </li>
+            </ul>
+        </div>
+        <div v-if="!state.collection">
+            <loading/>
+        </div>
     </div>
+
 </template>
 
 <script>
-    import PostModel from "../models/PostModel";
     import store from '../../../config/store'
 
     export default {
         data() {
             return {
-                store: store,
+                state: store.post.state,
             }
         },
         created() {
-            PostModel.all();
+            store.post.dispatch('all');
         },
     };
 </script>

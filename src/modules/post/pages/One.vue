@@ -1,37 +1,27 @@
 <template>
-    <div class="post" v-if="post">
-        <h1 class="post__title">{{ post.title }}</h1>
-        <p class="post__body">{{ post.body }}</p>
-        <p class="post__id">{{ post.id }}</p>
+    <div>
+        <div class="post" v-if="state.entity">
+            <h1 class="post__title">{{ state.entity.name }}</h1>
+            <p class="post__id">{{ state.entity.id }}</p>
+        </div>
+        <div class="post" v-if="!state.entity">
+            <loading/>
+        </div>
     </div>
 </template>
 
 <script>
-    import axios from 'axios'
+    import store from '../../../config/store'
 
     export default {
         props: ['id'],
         data() {
             return {
-                post: null,
-                endpoint: 'https://jsonplaceholder.typicode.com/posts/',
+                state: store.post.state,
             }
         },
-
         created() {
-            this.getPost(this.id);
+            store.post.dispatch('one', this.id);
         },
-
-        methods: {
-            getPost(id) {
-                axios(this.endpoint + id)
-                    .then(response => {
-                        this.post = response.data
-                    })
-                    .catch( error => {
-                        console.log(error)
-                    })
-            }
-        }
-    }
+    };
 </script>

@@ -1,6 +1,5 @@
 import Event from "../helpers/Event";
 import Router from "../helpers/Router";
-import store from "../config/store";
 import {Notification} from 'uiv'
 
 export default {
