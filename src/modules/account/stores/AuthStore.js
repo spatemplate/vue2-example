@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Event from "../../../helpers/Event";
+import AuthModel from "../models/AuthModel";
 
 Vue.use(Vuex);
 
@@ -35,8 +36,31 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        auth(context, login, pass) {
-
+        login(context, data) {
+            if (context.getters.token()) {
+                Event.trigger('account-login-already-logged-exception', context.state.identity);
+            } else {
+                let cb = (response) => {
+                    if (response.status < 400) {
+                        localStorage.token = response.data.token;
+                        context.commit('setIdentity', response.data);
+                        Event.trigger('account-login', response.data);
+                    } else if(response.status === 422) {
+                        /*Event.trigger('account-login-unprocessible-exception', {
+                            exception: 'Unprocessible entity',
+                            code: 422,
+                            data: response.data,
+                        });*/
+                    } else {
+                        Event.trigger('account-login-exception', {
+                            exception: 'Unknown error',
+                            code: 1,
+                            data: response.data,
+                        });
+                    }
+                };
+                AuthModel.login(data.login, data.password, cb);
+            }
         },
         logout(context) {
             if(!context.getters.isLogged()) {

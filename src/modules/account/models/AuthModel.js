@@ -6,31 +6,8 @@ import store from '../../../config/store';
 
 export default {
 
-    login(email, pass) {
-        if (AuthStore.getters.token()) {
-            Event.trigger('account-login-already-logged-exception', AuthStore.state.identity);
-            return
-        }
-        Rest.post('v1/auth', {login: email, password: pass}, null, (response) => {
-            if (response.status < 400) {
-                localStorage.token = response.data.token;
-                AuthStore.commit('setIdentity', response.data);
-                Event.trigger('account-login', response.data);
-            } else if(response.status === 422) {
-                Event.trigger('account-login-exception', {
-                    exception: 'Unprocessible entity',
-                    code: 422,
-                    data: response.data,
-                });
-            } else {
-                Event.trigger('account-login-exception', {
-                    exception: 'Unknown error',
-                    code: 1,
-                    data: response.data,
-                });
-            }
-        });
-
+    login(email, pass, cb) {
+        return Rest.post('v1/auth', {login: email, password: pass}, null, cb);
     },
 
     getIdentityFromApi() {

@@ -52,6 +52,9 @@ export default {
         if (response.status === 403) {
             Event.trigger('rest-forbidden-exception');
         }
+        if (response.status === 422) {
+            Event.trigger('rest-unprocessible-exception', response);
+        }
     },
 
 }

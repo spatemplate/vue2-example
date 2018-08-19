@@ -42,6 +42,17 @@ export default {
             })
         });
 
+        Event.attach('rest-unprocessible-exception', function (data) {
+            for(let key in data.data) {
+                let error = data.data[key];
+                Notification.notify({
+                    type: 'danger',
+                    title: error.field,
+                    content: error.message,
+                })
+            }
+        });
+
         Event.attach('account-get-identity', function (data) {
 
         });

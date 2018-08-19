@@ -28,7 +28,7 @@
 </template>
 
 <script>
-    import AuthModel from '../models/AuthModel'
+    import store from "../../../config/store";
 
     export default {
         data() {
@@ -39,7 +39,7 @@
         },
         methods: {
             login() {
-                AuthModel.login(this.email, this.pass)
+                store.auth.dispatch('login', {login: this.email, password: this.pass});
             }
         }
     }
