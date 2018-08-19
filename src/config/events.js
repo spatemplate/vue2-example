@@ -1,5 +1,6 @@
 import Event from "../helpers/Event";
 import Router from "../helpers/Router";
+import store from "../config/store";
 import {Notification} from 'uiv'
 
 export default {
@@ -12,7 +13,7 @@ export default {
                 title: 'Log out',
                 content: 'You are success logout form system!',
             });
-            Router.push('/');
+            //Router.push('/');
         });
 
         Event.attach('account-login', function (data) {
@@ -49,7 +50,7 @@ export default {
 
         });
 
-        Event.attach('post-list', function () {
+        Event.attach('post-all', function () {
 
         });
 
@@ -58,6 +59,7 @@ export default {
                 type: 'warning',
                 title: 'Need authorization!',
             });
+
             Router.push('/login');
         });
 

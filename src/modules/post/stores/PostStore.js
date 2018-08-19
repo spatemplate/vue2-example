@@ -6,16 +6,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        collection: []
+        collection: [],
+        entity: null,
     },
     mutations: {
         setCollection(state, collection) {
             state.collection = collection;
-        }
+        },
+        setEntity(state, entity) {
+            state.entity = entity;
+        },
     },
-    actions: {
-        setCollection(context, collection) {
-            context.commit('setCollection', collection);
-        }
-    }
 });

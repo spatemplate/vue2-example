@@ -46,6 +46,7 @@ export default {
             Event.trigger('rest-server-exception');
         }
         if (response.status === 401) {
+            store.auth.dispatch('logout');
             Event.trigger('rest-unauthorized-exception');
         }
         if (response.status === 403) {

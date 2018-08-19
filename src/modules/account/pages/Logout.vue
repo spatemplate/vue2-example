@@ -1,10 +1,12 @@
 <script>
-    import AuthModel from '../models/AuthModel'
     import Router from "../../../helpers/Router";
+    import store from '../../../config/store'
+    import Event from "../../../helpers/Event";
 
     export default {
         created() {
-            AuthModel.logout();
+            store.auth.dispatch('logout');
+            Event.trigger('account-logout');
             Router.push('/');
         }
     }
