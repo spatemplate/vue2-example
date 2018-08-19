@@ -1,17 +1,14 @@
-import About from '../modules/dashboard/pages/About.vue'
-import Dashboard from '../modules/dashboard/pages/Dashboard.vue'
-import Login from '../modules/account/pages/Login.vue'
-import Logout from '../modules/account/pages/Logout.vue'
-import PostAll from '../modules/post/pages/All.vue'
-import PostOne from '../modules/post/pages/One.vue'
+import postRoutes from '../modules/post/config/routes'
+import accountRoutes from '../modules/account/config/routes'
+import dashboardRoutes from '../modules/dashboard/config/routes'
 
-export default [
-    {path: '/', component: Dashboard},
-    {path: '/post', component: PostAll},
-    {path: '/post/:id', component: PostOne, name: 'post', props: true},
-    {path: '/post/page/:page', component: PostAll, name: 'post/page', props: true},
-    {path: '/about', component: About},
-    {path: '/dashboard', component: Dashboard},
-    {path: '/login', component: Login},
-    {path: '/logout', component: Logout}
-]
+export default {
+    modules: [
+        postRoutes,
+        accountRoutes,
+        dashboardRoutes,
+    ],
+    routes: [
+
+    ],
+}

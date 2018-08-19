@@ -2,42 +2,15 @@ import Event from "../helpers/Event";
 import Router from "../helpers/Router";
 import {Notification} from 'uiv'
 import store from "./store";
+import accountEvents from "../modules/account/config/events";
+import postEvents from "../modules/post/config/events";
 
 export default {
 
     init() {
 
-        Event.attach('account-logout', function (data) {
-            Notification.notify({
-                type: 'success',
-                content: 'Logged out!',
-            });
-            //Router.push('/');
-        });
-
-        Event.attach('account-login', function (data) {
-            Notification.notify({
-                type: 'success',
-                content: 'Logged in!',
-            });
-            Router.push('/');
-        });
-
-        Event.attach('account-login-already-logged-exception', function (data) {
-            Notification.notify({
-                type: 'warning',
-                content: 'You already authorized!',
-            });
-            Router.push('/');
-        });
-
-        Event.attach('account-login-exception', function (data) {
-            /*Notification.notify({
-                type: 'danger',
-                title: 'Log in',
-                content: 'Bad login or password!',
-            })*/
-        });
+        accountEvents.init();
+        postEvents.init();
 
         Event.attach('rest-unprocessible-exception', function (data) {
             for(let key in data.data) {
@@ -55,18 +28,6 @@ export default {
                 content: 'Not found!',
             });
             window.history.back();
-        });
-
-        Event.attach('account-get-identity', function (data) {
-
-        });
-
-        Event.attach('account-auth-change', function (identity) {
-
-        });
-
-        Event.attach('post-all', function () {
-
         });
 
         Event.attach('rest-request-before', function (request) {
