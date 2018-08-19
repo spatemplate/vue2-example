@@ -7,9 +7,9 @@
                 <li><router-link to="/post">Post</router-link></li>
             </navbar-nav>
             <navbar-nav right>
-                <li><router-link v-if="store.auth.getters.isLogged()" to="/">{{ store.auth.state.identity.login }}</router-link></li>
-                <li><router-link v-if="store.auth.getters.isLogged()" to="/logout">log out</router-link></li>
-                <li><router-link v-if="!store.auth.getters.isLogged()" to="/login">Log in</router-link></li>
+                <li><router-link v-if="store.auth.state.identity" to="/">{{ store.auth.state.identity.login }}</router-link></li>
+                <li><router-link v-if="store.auth.state.identity" to="/logout">log out</router-link></li>
+                <li><router-link v-if="!store.auth.state.identity" to="/login">Log in</router-link></li>
             </navbar-nav>
         </template>
     </navbar>

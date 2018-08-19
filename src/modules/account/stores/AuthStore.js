@@ -8,10 +8,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        identity: {},
+        identity: null,
     },
     mutations: {
         setIdentity(state, identity) {
+            if(identity === null) {
+                state.identity = null;
+                return;
+            }
             identity = typeof identity === "object" ? identity : {};
             identity.isLogged = this.getters.isLogged();
             if(identity.isLogged) {
