@@ -1,11 +1,11 @@
-import AuthModel from "../modules/account/models/AuthModel";
 import events from "./events";
 import components from "./components";
+import store from "./store";
 
 export default {
     init() {
         components.init();
         events.init();
-        AuthModel.init();
+        store.auth.dispatch('init');
     }
 };

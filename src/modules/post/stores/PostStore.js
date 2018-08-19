@@ -25,16 +25,12 @@ export default new Vuex.Store({
     actions: {
         all(context, query) {
             let callback = (response) => {
-                let collection = [];
-                if (response.status < 400) {
+                let collection = null;
+                let paginate = null;
+                if (!response.error) {
                     collection = response.data;
+                    paginate = response.paginate;
                 }
-                let paginate = {
-                    currentPage: response.headers['x-pagination-current-page'],
-                    pageCount: response.headers['x-pagination-page-count'],
-                    perPage: response.headers['x-pagination-per-page'],
-                    totalCount: response.headers['x-pagination-total-count'],
-                };
                 context.commit('setPaginate', paginate);
                 context.commit('setCollection', collection);
             };
@@ -44,7 +40,7 @@ export default new Vuex.Store({
         one(context, id) {
             let callback = (response) => {
                 let entity = null;
-                if (response.status < 400) {
+                if (!response.error) {
                     entity = response.data;
                 }
                 context.commit('setEntity', entity);

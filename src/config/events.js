@@ -35,11 +35,11 @@ export default {
         });
 
         Event.attach('account-login-exception', function (data) {
-            Notification.notify({
+            /*Notification.notify({
                 type: 'danger',
                 title: 'Log in',
                 content: 'Bad login or password!',
-            })
+            })*/
         });
 
         Event.attach('rest-unprocessible-exception', function (data) {
@@ -47,7 +47,6 @@ export default {
                 let error = data.data[key];
                 Notification.notify({
                     type: 'danger',
-                    title: error.field,
                     content: error.message,
                 })
             }

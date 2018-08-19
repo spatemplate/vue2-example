@@ -11,7 +11,7 @@
                     </router-link>
                 </li>
             </ul>
-            <pagination v-model="currentPage" :total-page="Number(state.paginate.pageCount)" size="sm"/>
+            <pagination v-if="state.paginate" v-model="currentPage" :total-page="Number(state.paginate.pageCount)" size="sm"/>
         </div>
         <div v-if="!state.collection">
             <loading/>

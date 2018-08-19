@@ -12,20 +12,19 @@ export default new Vuex.Store({
     },
     mutations: {
         setIdentity(state, identity) {
-            if(identity === null) {
+            if(typeof identity !== "object" || identity === {}/* || !this.getters.token()*/) {
                 state.identity = null;
                 return;
             }
+
             identity = typeof identity === "object" ? identity : {};
-            identity.isLogged = this.getters.isLogged();
-            if(identity.isLogged) {
-                identity.id = 1;
-                identity.login = 'User';
-            } else {
-                identity.id = 0;
-                identity.login = 'Guest';
+            if(this.getters.isLogged()) {
+                //identity.id = 1;
+               // identity.login = 'User';
             }
+            //console.log(identity.login);
             state.identity = identity;
+
             Event.trigger('account-auth-change', identity);
         },
         deleteIdentity(state) {
@@ -40,21 +39,28 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        init(context) {
+            if(context.getters.token()) {
+                context.commit('setIdentity', {
+                    id: 0,
+                });
+                let callback = (response) => {
+                    if (!response.error) {
+                        context.commit('setIdentity', response.data);
+                    }
+                };
+                AuthModel.info(callback);
+            }
+        },
         login(context, data) {
             if (context.getters.token()) {
                 Event.trigger('account-login-already-logged-exception', context.state.identity);
             } else {
                 let cb = (response) => {
-                    if (response.status < 400) {
-                        localStorage.token = response.data.token;
+                    if (response.status === 200) {
+                        context.commit('setToken', response.data.token);
                         context.commit('setIdentity', response.data);
                         Event.trigger('account-login', response.data);
-                    } else if(response.status === 422) {
-                        /*Event.trigger('account-login-unprocessible-exception', {
-                            exception: 'Unprocessible entity',
-                            code: 422,
-                            data: response.data,
-                        });*/
                     } else {
                         Event.trigger('account-login-exception', {
                             exception: 'Unknown error',
