@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from "../config/routes";
+import RouterHelper from "./RouterHelper";
 
 Vue.use(Router);
 
@@ -10,16 +11,6 @@ let config = {
     routes: routes.routes,
 };
 
-if(routes.modules) {
-    for(let key in routes.modules) {
-        let module = routes.modules[key];
-        if(module.routes) {
-            for(let key2 in module.routes) {
-                let route = module.routes[key2];
-                config.routes.push(route);
-            }
-        }
-    }
-}
+config.routes = RouterHelper.pushModules(routes.modules, config.routes);
 
 export default new Router(config);
