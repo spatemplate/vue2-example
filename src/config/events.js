@@ -10,8 +10,7 @@ export default {
         Event.attach('account-logout', function (data) {
             Notification.notify({
                 type: 'success',
-                title: 'Log out',
-                content: 'You are success logout form system!',
+                content: 'Logged out!',
             });
             //Router.push('/');
         });
@@ -19,8 +18,7 @@ export default {
         Event.attach('account-login', function (data) {
             Notification.notify({
                 type: 'success',
-                title: 'Hello ' + data.login,
-                content: 'You are success login in system!',
+                content: 'Logged in!',
             });
             Router.push('/');
         });
@@ -28,8 +26,7 @@ export default {
         Event.attach('account-login-already-logged-exception', function (data) {
             Notification.notify({
                 type: 'warning',
-                title: 'log in',
-                content: 'You already authed!',
+                content: 'You already authorized!',
             });
             Router.push('/');
         });
@@ -55,8 +52,7 @@ export default {
         Event.attach('rest-not-found-exception', function (data) {
             Notification.notify({
                 type: 'warning',
-                title: 'Not found',
-                content: 'Not found information!',
+                content: 'Not found!',
             });
             window.history.back();
         });
@@ -99,7 +95,7 @@ export default {
         Event.attach('rest-unauthorized-exception', function () {
             Notification.notify({
                 type: 'warning',
-                title: 'Need authorization!',
+                content: 'Need authorization!',
             });
             store.auth.dispatch('logout');
             Router.push('/login');
@@ -108,7 +104,7 @@ export default {
         Event.attach('rest-server-exception', function () {
             Notification.notify({
                 type: 'danger',
-                title: 'Server error!',
+                content: 'Server error!',
             });
             window.history.back();
         });
@@ -116,7 +112,7 @@ export default {
         Event.attach('rest-forbidden-exception', function () {
             Notification.notify({
                 type: 'warning',
-                title: 'Forbidden!',
+                content: 'Forbidden!',
             });
             window.history.back();
         });

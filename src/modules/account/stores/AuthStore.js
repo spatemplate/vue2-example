@@ -52,7 +52,7 @@ export default new Vuex.Store({
                 AuthModel.info(callback);
             }
         },
-        login(context, data) {
+        auth(context, data) {
             if (context.getters.token()) {
                 Event.trigger('account-login-already-logged-exception', context.state.identity);
             } else {
@@ -69,7 +69,7 @@ export default new Vuex.Store({
                         });
                     }
                 };
-                AuthModel.login(data.login, data.password, cb);
+                AuthModel.auth(data.login, data.password, cb);
             }
         },
         logout(context) {

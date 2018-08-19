@@ -2,12 +2,14 @@ import Rest from "../../../helpers/Rest";
 
 export default {
 
-    login(email, pass, cb) {
-        return Rest.post('v1/auth', {login: email, password: pass}, null, cb);
+    uri: 'v1/auth',
+
+    auth(email, pass, cb) {
+        return Rest.post(this.uri, {login: email, password: pass}, null, cb);
     },
 
     info(cb) {
-        return Rest.get('v1/auth', null, null, cb);
+        return Rest.get(this.uri, null, null, cb);
     },
 
 }
