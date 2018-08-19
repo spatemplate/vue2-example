@@ -1,3 +1,7 @@
+<template>
+    <div></div>
+</template>
+
 <script>
     import Router from "../../../helpers/Router";
     import store from '../../../config/store'

@@ -1,6 +1,7 @@
 import Event from "../helpers/Event";
 import Router from "../helpers/Router";
 import {Notification} from 'uiv'
+import store from "./store";
 
 export default {
 
@@ -52,6 +53,15 @@ export default {
             }
         });
 
+        Event.attach('rest-not-found-exception', function (data) {
+            Notification.notify({
+                type: 'warning',
+                title: 'Not found',
+                content: 'Not found information!',
+            });
+            window.history.back();
+        });
+
         Event.attach('account-get-identity', function (data) {
 
         });
@@ -64,12 +74,34 @@ export default {
 
         });
 
+        Event.attach('rest-request-before', function (request) {
+
+        });
+
+        Event.attach('rest-request-after', function (response) {
+            if (response.status === 401) {
+                Event.trigger('rest-unauthorized-exception');
+            }
+            if (response.status === 403) {
+                Event.trigger('rest-forbidden-exception');
+            }
+            if (response.status === 404) {
+                Event.trigger('rest-not-found-exception');
+            }
+            if (response.status === 422) {
+                Event.trigger('rest-unprocessible-exception', response);
+            }
+            if (response.status >= 500) {
+                Event.trigger('rest-server-exception');
+            }
+        });
+
         Event.attach('rest-unauthorized-exception', function () {
             Notification.notify({
                 type: 'warning',
                 title: 'Need authorization!',
             });
-
+            store.auth.dispatch('logout');
             Router.push('/login');
         });
 

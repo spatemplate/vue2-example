@@ -11,6 +11,7 @@
                     </router-link>
                 </li>
             </ul>
+            <pagination v-model="currentPage" :total-page="Number(state.paginate.pageCount)" size="sm"/>
         </div>
         <div v-if="!state.collection">
             <loading/>
@@ -23,13 +24,33 @@
     import store from '../../../config/store'
 
     export default {
+        props: ['page'],
         data() {
             return {
                 state: store.post.state,
+                currentPage: 1,
+                perPage: 20,
             }
         },
         created() {
-            store.post.dispatch('all');
+            if(this.page) {
+                this.currentPage = Number(this.page);
+            }
+            this.all();
         },
+        methods: {
+            all() {
+                let query = {
+                    "page": this.currentPage,
+                    "per-page": this.perPage,
+                };
+                store.post.dispatch('all', query);
+            }
+        },
+        watch: {
+            currentPage: function (val) {
+                this.all();
+            },
+        }
     };
 </script>

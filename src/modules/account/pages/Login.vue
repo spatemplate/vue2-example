@@ -18,8 +18,6 @@
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-flat">Войти</button>
-                        <!--<p v-if="error" class="error">Bad login information</p>-->
-
                     </div>
                 </form>
             </div>
@@ -44,9 +42,3 @@
         }
     }
 </script>
-
-<style>
-    .error {
-        color: red;
-    }
-</style>

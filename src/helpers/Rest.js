@@ -5,30 +5,37 @@ import store from "../config/store";
 export default {
 
     post: function (uri, data, headers, cb) {
-        Event.trigger('rest-before', {uri: uri, data: data, headers: headers, cb: cb});
+        this.beforeRequestTrigger(uri, data, headers, cb);
         const clientInstance = this.getInstance();
-        return clientInstance.post(uri, data, cb)
-            .then(response => {
-                cb(response);
-            })
-            .catch(error => {
-                this.errorHandle(error.response);
-                cb(error.response)
-            });
+        let responsePromise = clientInstance.post(uri, data);
+        return this.runResponsePromise(responsePromise, cb);
     },
 
     get: function (uri, data, headers, cb) {
-        Event.trigger('rest-before', {uri: uri, data: data, headers: headers, cb: cb});
-        const clientInstance = this.getInstance();
-        return clientInstance.get(uri, cb)
+        let url = uri;
+        let queryString = encodeQueryData(data);
+        if(queryString !== '') {
+            url = url + '?' + queryString;
+        }
+        this.beforeRequestTrigger(url, data, headers, cb);
+        let clientInstance = this.getInstance();
+        let responsePromise = clientInstance.get(url);
+        return this.runResponsePromise(responsePromise, cb);
+    },
+
+    beforeRequestTrigger(uri, data, headers, cb) {
+        Event.trigger('rest-request-before', {uri: uri, data: data, headers: headers, cb: cb});
+    },
+
+    runResponsePromise(responsePromise, cb) {
+        return responsePromise
             .then(response => {
                 cb(response);
-                Event.trigger('rest-end-success', response);
+                Event.trigger('rest-request-after', response);
             })
             .catch(error => {
-                this.errorHandle(error.response);
                 cb(error.response);
-                Event.trigger('rest-end-error', error.response);
+                Event.trigger('rest-request-after', error.response);
             });
     },
 
@@ -41,20 +48,11 @@ export default {
         });
     },
 
-    errorHandle(response) {
-        if (response.status >= 500) {
-            Event.trigger('rest-server-exception');
-        }
-        if (response.status === 401) {
-            store.auth.dispatch('logout');
-            Event.trigger('rest-unauthorized-exception');
-        }
-        if (response.status === 403) {
-            Event.trigger('rest-forbidden-exception');
-        }
-        if (response.status === 422) {
-            Event.trigger('rest-unprocessible-exception', response);
-        }
-    },
+}
 
+function encodeQueryData(data) {
+    let ret = [];
+    for (let d in data)
+        ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+    return ret.join('&');
 }

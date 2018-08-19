@@ -9,6 +9,7 @@ export default [
     {path: '/', component: Dashboard},
     {path: '/post', component: PostAll},
     {path: '/post/:id', component: PostOne, name: 'post', props: true},
+    {path: '/post/page/:page', component: PostAll, name: 'post/page', props: true},
     {path: '/about', component: About},
     {path: '/dashboard', component: Dashboard},
     {path: '/login', component: Login},
