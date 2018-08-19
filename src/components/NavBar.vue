@@ -5,6 +5,7 @@
             <navbar-nav>
                 <li><router-link to="/about">about</router-link></li>
                 <li><router-link to="/post">Post</router-link></li>
+                <li v-if="store.app.state.loading"><a href="#"><i class="fa fa-spinner fa-spin"></i></a></li>
             </navbar-nav>
             <navbar-nav right>
                 <li><router-link v-if="store.auth.state.identity" to="/">{{ store.auth.state.identity.login }}</router-link></li>

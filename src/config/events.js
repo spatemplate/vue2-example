@@ -74,10 +74,11 @@ export default {
         });
 
         Event.attach('rest-request-before', function (request) {
-
+            store.app.dispatch('showLoading');
         });
 
         Event.attach('rest-request-after', function (response) {
+            store.app.dispatch('hideLoading');
             if (response.status === 401) {
                 Event.trigger('rest-unauthorized-exception');
             }
