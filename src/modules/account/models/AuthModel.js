@@ -1,4 +1,4 @@
-import Rest from "../../../helpers/Rest";
+import Rest from "../../rest/helpers/Rest";
 
 export default {
 

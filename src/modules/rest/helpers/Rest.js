@@ -1,6 +1,6 @@
 import client from "axios";
-import Event from "./Event";
-import store from "../config/store";
+import Event from "../../../helpers/Event";
+import store from "../../../config/store";
 
 export default {
 
@@ -49,6 +49,9 @@ export default {
     },
 
     forgePaginate(clientResponse) {
+        if(!clientResponse.headers) {
+            return null;
+        }
         let headers = clientResponse.headers;
         if(headers['x-pagination-current-page'] || ['x-pagination-total-count']) {
             return {
