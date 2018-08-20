@@ -29,7 +29,7 @@
             return {
                 state: store.post.state,
                 currentPage: 1,
-                perPage: 20,
+                perPage: 15,
             }
         },
         created() {
