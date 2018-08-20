@@ -10,6 +10,7 @@ export default new Vuex.Store({
         paginate: null,
         collection: null,
         entity: null,
+        query: null,
     },
     mutations: {
         setCollection(state, collection) {
@@ -37,7 +38,7 @@ export default new Vuex.Store({
             context.commit('setCollection', null);
             PostModel.all(query, callback);
         },
-        one(context, id) {
+        oneById(context, id) {
             let callback = (response) => {
                 let entity = null;
                 if (!response.error) {
@@ -46,7 +47,7 @@ export default new Vuex.Store({
                 context.commit('setEntity', entity);
             };
             context.commit('setEntity', null);
-            PostModel.one(id, callback);
+            PostModel.oneById(id, callback);
         },
     },
 });

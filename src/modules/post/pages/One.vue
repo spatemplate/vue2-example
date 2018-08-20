@@ -21,7 +21,7 @@
             }
         },
         created() {
-            store.post.dispatch('one', this.id);
+            store.post.dispatch('oneById', this.id);
         },
     };
 </script>

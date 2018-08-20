@@ -7,21 +7,21 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         loading: false,
-        count: 0,
+        loadingRequestCount: 0,
     },
     mutations: {
         showLoading(state) {
-            state.count++;
-            this.commit('setLoading');
+            state.loadingRequestCount++;
+            this.commit('updateLoading');
         },
         hideLoading(state) {
-            if(state.count > 0) {
-                state.count--;
-                this.commit('setLoading');
+            if(state.loadingRequestCount > 0) {
+                state.loadingRequestCount--;
+                this.commit('updateLoading');
             }
         },
-        setLoading(state) {
-            state.loading = state.count > 0;
+        updateLoading(state) {
+            state.loading = state.loadingRequestCount > 0;
         },
     },
     actions: {
