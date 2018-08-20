@@ -2,6 +2,9 @@
 export default Object.freeze({
     app: {
         title: 'Wooppay',
+        localStorage: {
+            prefix: 'wooppay-wallet',
+        },
     },
     server: {
         domain: 'http://api.extended.tpl',

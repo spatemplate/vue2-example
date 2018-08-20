@@ -1,7 +1,7 @@
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Event from "../../../helpers/Event";
+import Local from "../../../helpers/Local";
 import AuthModel from "../models/AuthModel";
 
 Vue.use(Vuex);
@@ -12,43 +12,40 @@ export default new Vuex.Store({
     },
     mutations: {
         setIdentity(state, identity) {
-            if(typeof identity !== "object" || identity === {}/* || !this.getters.token()*/) {
+            if (typeof identity !== "object" || identity === {}/* || !this.getters.token()*/) {
                 state.identity = null;
+                Local.remove('identity');
                 return;
             }
-
-            identity = typeof identity === "object" ? identity : {};
-            if(this.getters.isLogged()) {
-                //identity.id = 1;
-               // identity.login = 'User';
-            }
-            //console.log(identity.login);
             state.identity = identity;
-
+            Local.set('identity', identity);
             Event.trigger('account-auth-change', identity);
         },
         deleteIdentity(state) {
             state.identity = null;
+            Local.remove('identity');
             Event.trigger('account-auth-change', null);
         },
         setToken(state, token) {
-            localStorage.token = token;
+            Local.set('token', token);
+
         },
         deleteToken(state) {
-            localStorage.token = '';
+            Local.remove('token');
         },
     },
     actions: {
         init(context) {
-            if(context.getters.token()) {
-                context.commit('setIdentity', {
-                    id: 0,
-                });
-                let callback = (response) => {
-                    if (!response.error) {
-                        context.commit('setIdentity', response.data);
-                    }
-                };
+            if (!Local.has('identity') || !context.getters.token()) {
+                return;
+            }
+            context.commit('setIdentity', Local.get('identity'));
+            let callback = (response) => {
+                if (!response.error) {
+                    context.commit('setIdentity', response.data);
+                }
+            };
+            if (!Local.has('identity')) {
                 AuthModel.info(callback);
             }
         },
@@ -73,7 +70,7 @@ export default new Vuex.Store({
             }
         },
         logout(context) {
-            if(!context.getters.isLogged()) {
+            if (!context.getters.isLogged()) {
                 return;
             }
             context.commit('deleteToken');
@@ -82,13 +79,13 @@ export default new Vuex.Store({
     },
     getters: {
         token: state => {
-            return function() {
-                return localStorage.token;
+            return function () {
+                return Local.get('token');
             }
         },
         isLogged: state => {
-            return function() {
-                return localStorage.token !== "";
+            return function () {
+                return Local.has('token');
             }
         },
     },
