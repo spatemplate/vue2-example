@@ -6,3 +6,5 @@ npm install vue-router
 
 npm install uiv --save
 npm install --save-dev axios
+npm install -g less
+npm install bootstrap@3 --save
