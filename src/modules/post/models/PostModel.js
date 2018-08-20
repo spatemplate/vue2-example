@@ -1,4 +1,4 @@
-import ModelFactory from "../../../components/factory/ModelFactory";
+import ModelFactory from "../../../components/domain/factories/ModelFactory";
 
 export default ModelFactory.createApiCrud({
 
