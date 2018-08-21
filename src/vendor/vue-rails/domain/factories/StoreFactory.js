@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import BaseActiveStore from "../base/BaseActiveStore";
-import StringHelper from "../../../helpers/StringHelper";
+import StringHelper from "../../app/helpers/StringHelper";
 
 Vue.use(Vuex);
 

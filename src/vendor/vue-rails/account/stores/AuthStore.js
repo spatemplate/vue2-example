@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Event from "../../../helpers/Event";
-import Local from "../../../helpers/Local";
+import Event from "../../app/helpers/Event";
+import Local from "../../app/helpers/Local";
 import AuthModel from "../models/AuthModel";
 
 Vue.use(Vuex);

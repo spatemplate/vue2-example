@@ -1,4 +1,4 @@
-import Event from "../../../helpers/Event";
+import Event from "../../../vendor/vue-rails/app/helpers/Event";
 
 export default {
 

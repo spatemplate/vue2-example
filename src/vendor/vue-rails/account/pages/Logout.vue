@@ -3,9 +3,9 @@
 </template>
 
 <script>
-    import Router from "../../../helpers/Router";
-    import store from '../../../config/store'
-    import Event from "../../../helpers/Event";
+    import Router from "../../../vue-rails/app/helpers/Router";
+    import store from '../../../../config/store'
+    import Event from "../../../vue-rails/app/helpers/Event";
 
     export default {
         created() {

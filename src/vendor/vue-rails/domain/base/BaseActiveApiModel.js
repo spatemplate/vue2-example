@@ -1,5 +1,5 @@
-import Rest from "../../../modules/rest/helpers/Rest";
-import Query from "../../../helpers/Query";
+import Rest from "../../rest/helpers/Rest";
+import Query from "../../app/helpers/Query";
 
 export default {
 

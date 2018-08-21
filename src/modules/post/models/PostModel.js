@@ -1,4 +1,4 @@
-import ModelFactory from "../../../components/domain/factories/ModelFactory";
+import ModelFactory from "../../../vendor/vue-rails/domain/factories/ModelFactory";
 
 export default ModelFactory.createApiCrud({
 

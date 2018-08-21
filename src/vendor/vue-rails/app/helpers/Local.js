@@ -1,5 +1,5 @@
 import PhpHelper from "./PhpHelper";
-import store from "../config/store";
+import store from "../../../../config/store";
 
 export default {
 

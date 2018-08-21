@@ -99,7 +99,7 @@
 </template>
 
 <script>
-    import store from "../../../config/store";
+    import store from "../../../../config/store";
     import Rest from "../helpers/Rest";
 
     export default {

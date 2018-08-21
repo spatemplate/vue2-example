@@ -1,7 +1,7 @@
-import Event from "../../../helpers/Event";
-import Router from "../../../helpers/Router";
+import Event from "../../app/helpers/Event";
+import Router from "../../app/helpers/Router";
 import {Notification} from 'uiv'
-import store from "../../../config/store";
+import store from "../../../../config/store";
 
 export default {
 

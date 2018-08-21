@@ -1,4 +1,4 @@
-import BaseActiveStore from "../components/domain/base/BaseActiveStore";
+import BaseActiveStore from "../../domain/base/BaseActiveStore";
 
 export default {
 

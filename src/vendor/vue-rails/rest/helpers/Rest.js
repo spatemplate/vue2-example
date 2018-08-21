@@ -1,6 +1,6 @@
 import client from "axios";
-import Event from "../../../helpers/Event";
-import store from "../../../config/store";
+import Event from "../../app/helpers/Event";
+import store from "../../../../config/store";
 
 export default {
 

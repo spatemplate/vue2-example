@@ -1,4 +1,4 @@
-import auth from "../modules/account/stores/AuthStore";
+import auth from "../vendor/vue-rails/account/stores/AuthStore";
 import post from "../modules/post/stores/PostStore";
 import config from "./config";
 import app from "../stores/AppStore";
