@@ -2,6 +2,6 @@ import ModelFactory from "../../../vendor/vue-rails/domain/factories/ModelFactor
 
 export default ModelFactory.createApiCrud({
 
-    uri: 'v1/city',
+    uri: 'v1/country',
 
 });

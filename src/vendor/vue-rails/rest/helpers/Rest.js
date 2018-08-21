@@ -5,7 +5,10 @@ import store from "../../../../config/store";
 export default {
 
     send: function (requestEntity, cb) {
-        this.beforeRequestTrigger(requestEntity.uri, requestEntity.data, requestEntity.headers, cb);
+        if(requestEntity.method === 'get' && requestEntity.data) {
+            requestEntity.uri = this.forgeUrl(requestEntity.uri, requestEntity.data);
+        }
+        Event.trigger('rest-request-before', requestEntity);
         const clientInstance = this.getInstance();
         const method = clientInstance[requestEntity.method];
         let responsePromise = method(requestEntity.uri, requestEntity.data);
@@ -13,18 +16,23 @@ export default {
     },
 
     post: function (uri, data, headers, cb) {
-        this.beforeRequestTrigger(uri, data, headers);
-        const clientInstance = this.getInstance();
-        let responsePromise = clientInstance.post(uri, data);
-        return this.runResponsePromise(responsePromise, cb);
+        let requestEntity = {
+            method: 'post',
+            uri: uri,
+            data: data,
+            headers: headers,
+        };
+        return this.send(requestEntity, cb);
     },
 
     get: function (uri, data, headers, cb) {
-        let url = this.forgeUrl(uri, data);
-        this.beforeRequestTrigger(url, data, headers);
-        let clientInstance = this.getInstance();
-        let responsePromise = clientInstance.get(url);
-        return this.runResponsePromise(responsePromise, cb);
+        let requestEntity = {
+            method: 'get',
+            uri: uri,
+            data: data,
+            headers: headers,
+        };
+        return this.send(requestEntity, cb);
     },
 
     forgeUrl(uri, query) {
@@ -34,10 +42,6 @@ export default {
             url = url + '?' + queryString;
         }
         return url;
-    },
-
-    beforeRequestTrigger(uri, data, headers) {
-        Event.trigger('rest-request-before', {uri: uri, data: data, headers: headers});
     },
 
     runResponsePromise(responsePromise, cb) {
