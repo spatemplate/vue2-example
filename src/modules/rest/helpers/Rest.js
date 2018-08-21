@@ -4,8 +4,16 @@ import store from "../../../config/store";
 
 export default {
 
+    send: function (requestEntity, cb) {
+        this.beforeRequestTrigger(requestEntity.uri, requestEntity.data, requestEntity.headers, cb);
+        const clientInstance = this.getInstance();
+        const method = clientInstance[requestEntity.method];
+        let responsePromise = method(requestEntity.uri, requestEntity.data);
+        return this.runResponsePromise(responsePromise, cb);
+    },
+
     post: function (uri, data, headers, cb) {
-        this.beforeRequestTrigger(uri, data, headers, cb);
+        this.beforeRequestTrigger(uri, data, headers);
         const clientInstance = this.getInstance();
         let responsePromise = clientInstance.post(uri, data);
         return this.runResponsePromise(responsePromise, cb);
@@ -13,7 +21,7 @@ export default {
 
     get: function (uri, data, headers, cb) {
         let url = this.forgeUrl(uri, data);
-        this.beforeRequestTrigger(url, data, headers, cb);
+        this.beforeRequestTrigger(url, data, headers);
         let clientInstance = this.getInstance();
         let responsePromise = clientInstance.get(url);
         return this.runResponsePromise(responsePromise, cb);
@@ -28,8 +36,8 @@ export default {
         return url;
     },
 
-    beforeRequestTrigger(uri, data, headers, cb) {
-        Event.trigger('rest-request-before', {uri: uri, data: data, headers: headers, cb: cb});
+    beforeRequestTrigger(uri, data, headers) {
+        Event.trigger('rest-request-before', {uri: uri, data: data, headers: headers});
     },
 
     runResponsePromise(responsePromise, cb) {
