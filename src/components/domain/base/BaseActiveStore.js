@@ -41,7 +41,7 @@ export default new Vuex.Store({
                 context.commit('setPaginate', paginate);
                 context.commit('setCollection', collection);
             };
-            context.commit('setCollection', null);
+            //context.commit('setCollection', null);
             context.state.modelObject.all(query, callback);
         },
         oneById(context, id) {
