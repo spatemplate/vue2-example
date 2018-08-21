@@ -36,35 +36,32 @@
                         <tab title="Query">
                             Query
                         </tab>
-                        <tab title="Body">
+                        <tab :title="'Body ' + (Object.keys(request.data).length - 1) ">
                             <br/>
                             <table class="table">
                                 <tbody>
 
                                 <tr v-for="(value,key) in request.data">
-
                                     <td class="column-check">
-                                        <div class="form-group field-requestform-bodyactives-1">
-                                            <input value="0" type="hidden">
+                                        <div class="form-group">
                                             <input value="1" checked="" tabindex="-1" type="checkbox">
                                         </div>
                                     </td>
                                     <td class="column-key">
-                                        <div class="form-group form-group-sm field-requestform-bodykeys-1">
-                                            <input class="form-control" v-model="key" placeholder="Body Param" type="text">
+                                        <div class="form-group form-group-sm">
+                                            <input class="form-control" v-model="key" v-on:blur="updateBodyItems" placeholder="Key" type="text">
                                         </div>
                                     </td>
                                     <td class="column-value">
-                                        <div class="form-group form-group-sm field-requestform-bodyvalues-1">
-                                            <input class="form-control" v-model="request.data[key]" placeholder="Value" type="text">
+                                        <div class="form-group form-group-sm">
+                                            <input class="form-control" v-model="request.data[key]" v-on:blur="updateBodyItems" placeholder="Value" type="text">
                                         </div>
                                     </td>
                                     <td class="column-actions">
-                                        <button type="button" class="close" tabindex="-1">
+                                        <button type="button" class="close" tabindex="-1" v-on:click="deleteDataByName(key)">
                                             <span>×</span>
                                         </button>
                                     </td>
-
                                 </tr>
 
                                 </tbody>
@@ -109,13 +106,14 @@
         data() {
             return {
                 response: null,
+
                 request: {
                     baseUrl: store.config.server.domain,
                     method: 'get',
                     uri: 'v1/city',
                     data: {
-                        login: 'admin',
-                        password: 'qwerty',
+                        //login: 'admin',
+                        //password: 'qwerty',
                     },
                 },
                 method: {
@@ -130,15 +128,42 @@
                 },
             }
         },
+        created() {
+            this.updateBodyItems();
+            //console.log(this.request.data);
+        },
         methods: {
+            deleteDataByName(name) {
+                //alert(this.request.data[name]);
+                delete this.request.data[name];
+                this.updateBodyItems();
+                //console.log(this.request.data);
+            },
+            updateBodyItems() {
+                let hasNew = false;
+                for(name in this.request.data) {
+                    //let value = this.request.data[name];
+                    if(name === '') {
+                        hasNew = true;
+                    }
+                }
+                if(!hasNew) {
+                    this.request.data[''] = '';
+                }
+            },
             setResponse(response) {
                 this.response = response;
-                console.log(response.headers);
+                //console.log(response.headers);
             },
             send() {
                 Rest.send(this.request, this.setResponse);
             }
-        }
+        },
+        watch: {
+            /*request: function (val) {
+                this.updateBodyItems();
+            },*/
+        },
     }
 </script>
 
