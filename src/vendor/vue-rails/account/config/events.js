@@ -1,13 +1,14 @@
 import Event from "../../app/helpers/Event";
 import Router from "../../app/helpers/Router";
 import {Notification} from 'uiv'
+import Flash from "../../notify/helpers/Flash";
 
 export default {
 
     init() {
 
         Event.attach('account-logout', function (data) {
-            Notification.notify({
+            Flash.show({
                 type: 'success',
                 content: 'Logged out!',
             });
@@ -15,7 +16,7 @@ export default {
         });
 
         Event.attach('account-login', function (data) {
-            Notification.notify({
+            Flash.show({
                 type: 'success',
                 content: 'Logged in!',
             });
@@ -23,7 +24,7 @@ export default {
         });
 
         Event.attach('account-login-already-logged-exception', function (data) {
-            Notification.notify({
+            Flash.show({
                 type: 'warning',
                 content: 'You already authorized!',
             });
@@ -31,7 +32,7 @@ export default {
         });
 
         Event.attach('account-login-exception', function (data) {
-            /*Notification.notify({
+            /*Flash.show({
                 type: 'danger',
                 title: 'Log in',
                 content: 'Bad login or password!',

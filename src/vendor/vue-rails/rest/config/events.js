@@ -2,6 +2,7 @@ import Event from "../../app/helpers/Event";
 import Router from "../../app/helpers/Router";
 import {Notification} from 'uiv'
 import store from "../../../../config/store";
+import Flash from "../../notify/helpers/Flash";
 
 export default {
 
@@ -10,7 +11,7 @@ export default {
         Event.attach('rest-unprocessible-exception', function (data) {
             for(let key in data.data) {
                 let error = data.data[key];
-                Notification.notify({
+                Flash.show({
                     type: 'danger',
                     content: error.message,
                 })
@@ -18,7 +19,7 @@ export default {
         });
 
         Event.attach('rest-not-found-exception', function (data) {
-            Notification.notify({
+            Flash.show({
                 type: 'warning',
                 content: 'Not found!',
             });
@@ -49,7 +50,7 @@ export default {
         });
 
         Event.attach('rest-unauthorized-exception', function () {
-            Notification.notify({
+            Flash.show({
                 type: 'warning',
                 content: 'Need authorization!',
             });
@@ -58,7 +59,7 @@ export default {
         });
 
         Event.attach('rest-server-exception', function () {
-            Notification.notify({
+            Flash.show({
                 type: 'danger',
                 content: 'Server error!',
             });
@@ -66,7 +67,7 @@ export default {
         });
 
         Event.attach('rest-forbidden-exception', function () {
-            Notification.notify({
+            Flash.show({
                 type: 'warning',
                 content: 'Forbidden!',
             });
