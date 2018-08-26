@@ -1,19 +1,7 @@
-import client from "axios";
-import Event from "../../app/helpers/Event";
+import Http from "../drivers/axios/HttpDriver";
 import store from "../../../../config/store";
 
 export default {
-
-    send: function (requestEntity, cb) {
-        if(requestEntity.method === 'get' && requestEntity.data) {
-            requestEntity.uri = this.forgeUrl(requestEntity.uri, requestEntity.data);
-        }
-        Event.trigger('rest-request-before', requestEntity);
-        const clientInstance = this.getInstance();
-        const method = clientInstance[requestEntity.method];
-        let responsePromise = method(requestEntity.uri, requestEntity.data);
-        return this.runResponsePromise(responsePromise, cb);
-    },
 
     post: function (uri, data, headers, cb) {
         let requestEntity = {
@@ -35,30 +23,31 @@ export default {
         return this.send(requestEntity, cb);
     },
 
-    forgeUrl(uri, query) {
-        let url = uri;
-        let queryString = this.encodeQueryData(query);
-        if(queryString !== '') {
-            url = url + '?' + queryString;
+    getClientConfig() {
+        return {
+            baseURL: store.config.server.domain + '/',
+            headers: {
+                'Authorization': store.auth.getters.token(),
+            }
+        };
+    },
+
+    send: function (requestEntity, cb) {
+        const clientConfig = this.getClientConfig();
+        let clientResponse = Http.send(requestEntity, cb, clientConfig);
+        return this.forgeResponse(clientResponse);
+    },
+
+    /*send11111: function (requestEntity, cb) {
+        if(requestEntity.method === 'get' && requestEntity.data) {
+            requestEntity.uri = this.forgeUrl(requestEntity.uri, requestEntity.data);
         }
-        return url;
-    },
-
-    runResponsePromise(responsePromise, cb) {
-        return responsePromise
-            .then(response => {
-                return this.runAfterResponse(response, cb);
-            })
-            .catch(error => {
-                return this.runAfterResponse(error, cb);
-            });
-    },
-
-    runAfterResponse(clientResponse, cb) {
-        let response = this.createResponse(clientResponse);
-        Event.trigger('rest-request-after', response);
-        return cb(response);
-    },
+        Event.trigger('rest-request-before', requestEntity);
+        const clientInstance = this.getInstance();
+        const method = clientInstance[requestEntity.method];
+        let responsePromise = method(requestEntity.uri, requestEntity.data);
+        return this.runResponsePromise(responsePromise, cb);
+    },*/
 
     forgePaginate(clientResponse) {
         if(!clientResponse.headers) {
@@ -76,41 +65,9 @@ export default {
         return null;
     },
 
-    createResponse(clientResponse) {
-        if(clientResponse.response) {
-            clientResponse = clientResponse.response;
-        }
-        let response = {};
-        response.status = clientResponse.status;
-        response.data = clientResponse.data;
-        response.headers = clientResponse.headers;
-        if(response.status < 400) {
-            response.error = null;
-        } else if(response.status >= 400 && response.status < 500) {
-            response.error = 'client';
-        } else if(response.status >= 500) {
-            response.error = 'server';
-        }
-        response.paginate = this.forgePaginate(clientResponse);
-        return response;
-    },
-
-    getInstance() {
-         return client.create({
-            baseURL: store.config.server.domain + '/',
-            headers: {
-                'Authorization': store.auth.getters.token(),
-            }
-        });
-    },
-
-    encodeQueryData(data) {
-        let ret = [];
-        for (let d in data)
-            ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
-        return ret.join('&');
+    forgeResponse(clientResponse) {
+        clientResponse.paginate = this.forgePaginate(clientResponse);
+        return clientResponse;
     },
 
 }
-
-
