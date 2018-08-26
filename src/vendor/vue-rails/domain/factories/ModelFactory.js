@@ -3,7 +3,7 @@ import ObjectHelper from "../helpers/ObjectHelper";
 
 export default {
 
-    createApiCrud(model) {
+    createActiveApi(model) {
         model = ObjectHelper.extendsOf(model, BaseActiveApiModel);
         return model;
     },
