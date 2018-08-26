@@ -76,6 +76,9 @@
         </form>
 
         <div v-if="response">
+
+            <pagination v-if="response.paginate" v-model="currentPage" :total-page="Number(response.paginate.pageCount)" size="sm"/>
+
             <h4>Response</h4>
             <tabs>
                 <tab title="Body">
@@ -86,6 +89,10 @@
                 <tab title="Headers">
                     <br/>
                     <pre><code class="json hljs">{{ JSON.stringify(response.headers, null, 2) }}</code></pre>
+                </tab>
+                <tab v-if="response.paginate" title="Paginate">
+                    <br/>
+                    <pre><code class="json hljs">{{ JSON.stringify(response.paginate, null, 2) }}</code></pre>
                 </tab>
 
                 <span slot="nav-right">
@@ -106,7 +113,7 @@
         data() {
             return {
                 response: null,
-
+                currentPage: 1,
                 request: {
                     baseUrl: store.config.server.domain,
                     method: 'get',
@@ -156,6 +163,10 @@
                 //console.log(response.headers);
             },
             send() {
+                if(this.currentPage) {
+                    //this.request.page = this.currentPage;
+                    this.request.uri = this.request.uri + '?page=' +  this.currentPage;
+                }
                 Rest.send(this.request, this.setResponse);
             }
         },

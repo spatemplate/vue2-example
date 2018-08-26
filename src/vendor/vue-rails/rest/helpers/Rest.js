@@ -1,5 +1,6 @@
 import Http from "../drivers/axios/HttpDriver";
 import store from "../../../../config/store";
+import Event from "../../app/helpers/Event";
 
 export default {
 
@@ -34,20 +35,29 @@ export default {
 
     send: function (requestEntity, cb) {
         const clientConfig = this.getClientConfig();
-        let clientResponse = Http.send(requestEntity, cb, clientConfig);
-        return this.forgeResponse(clientResponse);
+        let responsePromise = Http.send(requestEntity, cb, clientConfig);
+
+        //return this.forgeResponse(clientResponse);
+        return this.runResponsePromise(responsePromise, cb);
     },
 
-    /*send11111: function (requestEntity, cb) {
-        if(requestEntity.method === 'get' && requestEntity.data) {
-            requestEntity.uri = this.forgeUrl(requestEntity.uri, requestEntity.data);
-        }
-        Event.trigger('rest-request-before', requestEntity);
-        const clientInstance = this.getInstance();
-        const method = clientInstance[requestEntity.method];
-        let responsePromise = method(requestEntity.uri, requestEntity.data);
-        return this.runResponsePromise(responsePromise, cb);
-    },*/
+
+    runResponsePromise(responsePromise, cb) {
+        return responsePromise
+            .then(response => {
+                return this.runAfterResponse(response, cb);
+            })
+            .catch(error => {
+                return this.runAfterResponse(error, cb);
+            });
+    },
+
+    runAfterResponse(clientResponse, cb) {
+        let response = Http.createResponse(clientResponse);
+        response.paginate = this.forgePaginate(response);
+        Event.trigger('rest-request-after', response);
+        return cb(response);
+    },
 
     forgePaginate(clientResponse) {
         if(!clientResponse.headers) {
@@ -63,11 +73,6 @@ export default {
             };
         }
         return null;
-    },
-
-    forgeResponse(clientResponse) {
-        clientResponse.paginate = this.forgePaginate(clientResponse);
-        return clientResponse;
     },
 
 }

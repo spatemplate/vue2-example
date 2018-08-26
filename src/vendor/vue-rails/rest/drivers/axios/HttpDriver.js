@@ -1,11 +1,11 @@
 import client from "axios";
 import Event from "../../../app/helpers/Event";
-import store from "../../../../../config/store";
 
 export default {
 
 
-    send: function (requestEntity, cb, clientConfig) {
+    send: function (origrequestEntity, cb, clientConfig) {
+        let requestEntity = origrequestEntity;
         if(requestEntity.method === 'get' && requestEntity.data) {
             requestEntity.uri = this.forgeUrl(requestEntity.uri, requestEntity.data);
         }
@@ -13,7 +13,8 @@ export default {
         const clientInstance = this.getInstance(clientConfig);
         const method = clientInstance[requestEntity.method];
         let responsePromise = method(requestEntity.uri, requestEntity.data);
-        return this.runResponsePromise(responsePromise, cb);
+        return responsePromise;
+        //return this.runResponsePromise(responsePromise, cb);
     },
 
     getInstance(clientConfig) {
@@ -27,7 +28,12 @@ export default {
         let url = uri;
         let queryString = this.encodeQueryData(query);
         if(queryString !== '') {
-            url = url + '?' + queryString;
+            if(url[0] === '?') {
+                url = url + '&';
+            } else {
+                url = url + '?';
+            }
+            url = url + queryString;
         }
         return url;
     },

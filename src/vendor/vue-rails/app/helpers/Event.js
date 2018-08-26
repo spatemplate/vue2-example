@@ -12,7 +12,7 @@ export default {
         }
         for (let i = 0; i < handlers.length; i++) {
             if(handlers[i].name === name) {
-                handlers[i].callback(event);
+                return handlers[i].callback(event);
             }
         }
     }
