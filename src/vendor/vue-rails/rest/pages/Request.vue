@@ -113,7 +113,7 @@
         data() {
             return {
                 response: null,
-                currentPage: 1,
+                currentPage: null,
                 request: {
                     baseUrl: store.config.server.domain,
                     method: 'get',

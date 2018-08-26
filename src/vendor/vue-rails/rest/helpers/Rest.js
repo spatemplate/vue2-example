@@ -36,11 +36,8 @@ export default {
     send: function (requestEntity, cb) {
         const clientConfig = this.getClientConfig();
         let responsePromise = Http.send(requestEntity, cb, clientConfig);
-
-        //return this.forgeResponse(clientResponse);
         return this.runResponsePromise(responsePromise, cb);
     },
-
 
     runResponsePromise(responsePromise, cb) {
         return responsePromise
@@ -64,15 +61,19 @@ export default {
             return null;
         }
         let headers = clientResponse.headers;
+        let res = null;
         if(headers['x-pagination-current-page'] || ['x-pagination-total-count']) {
-            return {
+            res = {
                 currentPage: headers['x-pagination-current-page'] ? headers['x-pagination-current-page'] : 1,
                 pageCount: headers['x-pagination-page-count'] ? headers['x-pagination-page-count'] : 0,
                 perPage: headers['x-pagination-per-page'] ? headers['x-pagination-per-page'] : 10,
                 totalCount: headers['x-pagination-total-count'] ? headers['x-pagination-total-count'] : 0,
             };
         }
-        return null;
+        if(res && res.totalCount === 0) {
+            res = null;
+        }
+        return res;
     },
 
 }
