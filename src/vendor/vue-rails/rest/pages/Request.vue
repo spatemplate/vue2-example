@@ -113,7 +113,7 @@
         data() {
             return {
                 response: null,
-                currentPage: null,
+                currentPage: 1,
                 request: {
                     baseUrl: store.config.server.domain,
                     method: 'get',
@@ -163,10 +163,10 @@
                 //console.log(response.headers);
             },
             send() {
-                if(this.currentPage) {
-                    //this.request.page = this.currentPage;
-                    this.request.uri = this.request.uri + '?page=' +  this.currentPage;
+                if(this.response && this.response.paginate && this.currentPage) {
+                    this.request.data.page = this.currentPage;
                 }
+                //console.log(this.request.uri);
                 Rest.send(this.request, this.setResponse);
             }
         },

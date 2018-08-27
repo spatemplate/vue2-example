@@ -1,5 +1,7 @@
 import client from "axios";
 import Event from "../../../app/helpers/Event";
+import UrlHelper from "../../helpers/UrlHelper";
+import ObjectHelper from "../../../domain/helpers/ObjectHelper";
 
 export default {
 
@@ -21,25 +23,14 @@ export default {
     },
 
     forgeUrl(uri, query) {
-        return uri;
-        let url = uri;
-        let queryString = this.encodeQueryData(query);
+        let parse = UrlHelper.parseUrl(uri);
+        query = ObjectHelper.merge(parse.query, query);
+        let url = parse.route;
+        let queryString = UrlHelper.encodeQueryData(query);
         if(queryString !== '') {
-            if(url[0] === '?') {
-                url = url + '&';
-            } else {
-                url = url + '?';
-            }
-            url = url + queryString;
+            url = url + '?' + queryString;
         }
         return url;
-    },
-
-    encodeQueryData(data) {
-        let ret = [];
-        for (let d in data)
-            ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
-        return ret.join('&');
     },
 
     createResponse(clientResponse) {
