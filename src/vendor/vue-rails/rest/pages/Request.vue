@@ -137,19 +137,15 @@
         },
         created() {
             this.updateBodyItems();
-            //console.log(this.request.data);
         },
         methods: {
             deleteDataByName(name) {
-                //alert(this.request.data[name]);
                 delete this.request.data[name];
                 this.updateBodyItems();
-                //console.log(this.request.data);
             },
             updateBodyItems() {
                 let hasNew = false;
                 for(name in this.request.data) {
-                    //let value = this.request.data[name];
                     if(name === '') {
                         hasNew = true;
                     }
@@ -160,7 +156,6 @@
             },
             setResponse(response) {
                 this.response = response;
-                //console.log(response.headers);
             },
             send() {
                 if(this.response && this.response.paginate && this.currentPage) {
