@@ -1,6 +1,7 @@
 import Http from "../drivers/axios/HttpDriver";
 import store from "../../../../config/store";
 import Event from "../../app/helpers/Event";
+import UrlHelper from "./UrlHelper";
 
 export default {
 
@@ -50,7 +51,7 @@ export default {
     },
 
     runAfterResponse(clientResponse, cb) {
-        let response = Http.createResponse(clientResponse);
+        let response = UrlHelper.createResponse(clientResponse);
         response.paginate = this.forgePaginate(response);
         Event.trigger('rest-request-after', response);
         return cb(response);

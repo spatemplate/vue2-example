@@ -1,3 +1,5 @@
+import ObjectHelper from "../../domain/helpers/ObjectHelper";
+
 export default {
 
     parseQuery(uri) {
@@ -33,4 +35,40 @@ export default {
         return ret.join('&');
     },
 
+    forgeUrlFromRequestEntity(requestEntity) {
+        let url = requestEntity.uri;
+        if(requestEntity.method === 'get' && requestEntity.data) {
+            url = this.forgeUrl(url, requestEntity.data);
+        }
+        return url;
+    },
+
+    forgeUrl(uri, query) {
+        let parse = this.parseUrl(uri);
+        query = ObjectHelper.merge(parse.query, query);
+        let url = parse.route;
+        let queryString = this.encodeQueryData(query);
+        if(queryString !== '') {
+            url = url + '?' + queryString;
+        }
+        return url;
+    },
+
+    createResponse(clientResponse) {
+        if(clientResponse.response) {
+            clientResponse = clientResponse.response;
+        }
+        let response = {};
+        response.status = clientResponse.status;
+        response.data = clientResponse.data;
+        response.headers = clientResponse.headers;
+        if(response.status < 400) {
+            response.error = null;
+        } else if(response.status >= 400 && response.status < 500) {
+            response.error = 'client';
+        } else if(response.status >= 500) {
+            response.error = 'server';
+        }
+        return response;
+    },
 }

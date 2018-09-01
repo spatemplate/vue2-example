@@ -77,7 +77,7 @@
 
         <div v-if="response">
 
-            <pagination v-if="response.paginate" v-model="currentPage" :total-page="Number(response.paginate.pageCount)" size="sm"/>
+            <pagination v-if="response.paginate" v-model="paginate.page" :total-page="Number(response.paginate.pageCount)" size="sm"/>
 
             <h4>Response</h4>
             <tabs>
@@ -113,7 +113,10 @@
         data() {
             return {
                 response: null,
-                currentPage: 1,
+                paginate: {
+                    page: null,
+                    "per-page": null,
+                },
                 request: {
                     baseUrl: store.config.server.domain,
                     method: 'get',
@@ -145,7 +148,7 @@
             },
             updateBodyItems() {
                 let hasNew = false;
-                for(name in this.request.data) {
+                for(let name in this.request.data) {
                     if(name === '') {
                         hasNew = true;
                     }
@@ -156,12 +159,15 @@
             },
             setResponse(response) {
                 this.response = response;
+                this.paginate['per-page'] = response.headers["per-page"];
             },
             send() {
-                if(this.response && this.response.paginate && this.currentPage) {
-                    this.request.data.page = this.currentPage;
+                if(this.response && this.response.paginate && this.paginate.page) {
+                    this.request.data.page = this.paginate.page;
+                    if(this.paginate['per-page']) {
+                        this.request.data['per-page'] = this.paginate['per-page'];
+                    }
                 }
-                //console.log(this.request.uri);
                 Rest.send(this.request, this.setResponse);
             }
         },
